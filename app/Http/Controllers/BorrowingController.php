@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Borrowing;
+use App\Models\Category;
 use App\Models\Facility;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,102 +15,82 @@ class BorrowingController extends Controller
     public function Peminjaman()
     {
         if (Auth::user()->is_admin) {
-            // Admin can see all borrowings
-            $borrowings = Borrowing::with(['facilities', 'users'])->get();
+            // For admin
+            $borrowings = Borrowing::with(['facility', 'user'])->get();
+            $facilities = Facility::with('category')->get();
+            return view('admin.peminjaman', compact('borrowings', 'facilities'));
         } else {
-            // User can only see their own borrowings
-            $borrowings = Borrowing::with(['facilities', 'users'])
+            // For regular user
+            $borrowings = Borrowing::with(['facility', 'user'])
                 ->where('user_id', Auth::id())
                 ->get();
+            $facilities = Facility::with('category')->get();
+            return view('user.peminjaman', compact('borrowings', 'facilities'));
         }
-
-        $borrowings = Borrowing::with(['facilities', 'users'])->get();
-        return view('user.peminjaman', compact('borrowings'));
+        
     }
 
-    public function adminPeminjaman()
+    public function Laporan()
     {
-        $borrowings = Borrowing::with(['facilities', 'users'])->get();
-        return view('admin.peminjaman', compact('borrowings'));
+        if (Auth::user()->is_admin) {
+            $borrowings = Borrowing::with(['facility', 'user'])->get();
+            $facilities = Facility::with('category')->get();
+        } else {
+            $borrowings = Borrowing::with(['facility', 'user'])
+                ->where('user_id', Auth::id())
+                ->get();
+            $facilities = Facility::with('category')->get(); // Ensure this is defined here too
+        }
+        
+        return view('admin.laporan', compact('borrowings', 'facilities'));
     }
+
 
     // Store a newly created resource in storage.
     public function store(Request $request)
     {
-        if(Auth::user()->is_admin){
-            $request->validate([
-                'fasilitas_id' => 'required|exists:facilities,id',
-                'user_id' => 'required|exists:users,id',
-                'tanggal_dari' => 'required|date',
-                'tanggal_sampai' => 'required|date|after:tanggal_dari',
-                'status' => 'required|in:diterima,ditolak,pending',
-            ]);
-    
-            Borrowing::create([
-                'fasilitas_id' => $request->fasilitas_id,
-                'user_id' => $request->user_id,
-                'tanggal_dari' => $request->tanggal_dari,
-                'tanggal_sampai' => $request->tanggal_sampai,
-                'status' => $request->status,
-            ]);
-        }else{
-            $request->validate([
-                'fasilitas_id' => 'required|exists:facilities,id',
-                'tanggal_dari' => 'required|date',
-                'tanggal_sampai' => 'required|date|after:tanggal_dari',
-            ]);
-    
-            Borrowing::create([
-                'fasilitas_id' => $request->fasilitas_id,
-                'user_id' => Auth::id(),
-                'tanggal_dari' => $request->tanggal_dari,
-                'tanggal_sampai' => $request->tanggal_sampai,
-                'status' => 'pending',
-            ]);
-        }
+        $request->validate([
+            'facility_id' => 'required|exists:facilities,id', // Sesuaikan dengan nama input di form
+            'tanggal_mulai' => 'required|date', // Sesuaikan dengan nama input di form
+            'tanggal_sampai' => 'required|date|after:tanggal_mulai', // Sesuaikan dengan nama input di form
+        ]);
 
-        return redirect()->route('admin.borrowing')->with('success', 'Borrowing created successfully.');
+        Borrowing::create([
+            'fasilitas_id' => $request->facility_id, // Sesuaikan dengan nama input di form
+            'user_id' => Auth::id(), // Mendapatkan ID pengguna yang sedang login
+            'tanggal_dari' => $request->tanggal_mulai, // Sesuaikan dengan nama input di form
+            'tanggal_sampai' => $request->tanggal_sampai, // Sesuaikan dengan nama input di form
+        ]);
+
+        if (Auth::user()->is_admin) {
+            // Redirect ke view admin.peminjaman
+            return redirect()->route('admin.peminjaman')->with('success', 'Borrowing status updated successfully.');
+        } else {
+            // Redirect ke view user.peminjaman
+            return redirect()->route('user.peminjaman')->with('success', 'Borrowing status updated successfully.');
+        }
     }
 
-    // Display the specified resource.
-    public function show(Borrowing $borrowing)
-    {
-        if (Auth::user()->is_admin || $borrowing->user_id == Auth::id()) {
-            return view('borrowings.show', compact('borrowing'));
-        }
-
-        return redirect()->route('borrowings.index')->with('error', 'Unauthorized access.');
-    }
-
-    // Show the form for editing the specified resource.
-    public function edit(Borrowing $borrowing)
-    {
-        if (Auth::user()->is_admin || $borrowing->user_id == Auth::id()) {
-            $facilities = Facility::all();
-            return view('borrowings.edit', compact('borrowing', 'facilities'));
-        }
-
-        return redirect()->route('borrowings.index')->with('error', 'Unauthorized access.');
-    }
 
     // Update the specified resource in storage.
-    public function update(Request $request, Borrowing $borrowing)
+    public function update(Request $request, $id)
     {
-        if (Auth::user()->is_admin || $borrowing->user_id == Auth::id()) {
-            $request->validate([
-                'fasilitas_id' => 'required|exists:facilities,id',
-                'tanggal_dari' => 'required|date',
-                'tanggal_sampai' => 'required|date|after:tanggal_dari',
-                'status' => 'required|string',
-            ]);
+        // Validasi data
+        $request->validate([
+            'status' => 'required|in:pending,ditolak,diterima', // Validasi status
+        ]);
 
-            $borrowing->update($request->all());
+        // Temukan peminjaman berdasarkan ID
+        $borrowing = Borrowing::findOrFail($id);
 
-            return redirect()->route('borrowings.index')->with('success', 'Borrowing updated successfully.');
-        }
+        // Perbarui data borrowing
+        $borrowing->update([
+            'status' => $request->status,
+        ]);
 
-        return redirect()->route('borrowings.index')->with('error', 'Unauthorized access.');
-    }
+        // Redirect kembali dengan pesan sukses
+        return redirect()->route('admin.laporan')->with('success', 'Borrowing status updated successfully.');
+}
 
     // Remove the specified resource from storage.
     public function destroy(Borrowing $borrowing)

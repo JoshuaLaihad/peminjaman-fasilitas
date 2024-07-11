@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Borrowing extends Model
 {
     use HasFactory;
 
     protected $table = 'borrowings';
+
+    public $timestamps = false;
 
     protected $fillable = [
         'fasilitas_id',
@@ -20,15 +21,17 @@ class Borrowing extends Model
         'status',
     ];
     
-    public function facilities()
+
+    public function facility()
     {
-        return $this->hasMany(Facility::class);
-    }
-    public function users()
-    {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(Facility::class, 'fasilitas_id');
     }
 
+    // Relasi dengan user
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
 
 }

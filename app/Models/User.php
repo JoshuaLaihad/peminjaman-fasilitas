@@ -48,6 +48,6 @@ class User extends Authenticatable
 
     public function borrowings()
     {
-        return $this->belongsTo(Borrowing::class);
+        return $this->hasMany(Borrowing::class);
     }
 }

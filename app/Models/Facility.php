@@ -18,14 +18,17 @@ class Facility extends Model
         'nama_fasilitas',
     ];
 
-    public function borrowings()
-    {
-        return $this->belongsTo(Borrowing::class);
-    }
-    public function categories()
+
+    public function category()
     {
         return $this->belongsTo(Category::class, 'categories_id');
     }
+
+    // Relasi dengan peminjaman
+    // public function borrowings()
+    // {
+    //     return $this->hasMany(Borrowing::class);
+    // }
 
     
 }

@@ -22,27 +22,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-    // Route untuk melihat daftar peminjaman
-    Route::get('/borrowings', [BorrowingController::class, 'index'])->name('borrowings.index');
-
-    // Route untuk melihat formulir pembuatan peminjaman baru
-    Route::get('/borrowings/create', [BorrowingController::class, 'create'])->name('borrowings.create');
-
-    // Route untuk menyimpan peminjaman baru
-    Route::post('/borrowings', [BorrowingController::class, 'store'])->name('borrowings.store');
-
-    // Route untuk melihat detail peminjaman tertentu
-    Route::get('/borrowings/{borrowing}', [BorrowingController::class, 'show'])->name('borrowings.show');
-
-    // Route untuk melihat formulir pengeditan peminjaman tertentu
-    Route::get('/borrowings/{borrowing}/edit', [BorrowingController::class, 'edit'])->name('borrowings.edit');
-
-    // Route untuk memperbarui peminjaman tertentu
-    Route::put('/borrowings/{borrowing}', [BorrowingController::class, 'update'])->name('borrowings.update');
-
-    // Route untuk menghapus peminjaman tertentu
-    Route::delete('/borrowings/{borrowing}', [BorrowingController::class, 'destroy'])->name('borrowings.destroy');
-
 //Route Login
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login-proses', [AuthController::class, 'login'])->name('login.proses');
@@ -53,11 +32,16 @@ Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('
 Route::post('/register-proses', [AuthController::class, 'register'])->name('register.proses');
 
 //Route Dashboard
-Route::get('/admin/dashboard', [HomeController::class, 'adminDashboard'])->name('admin.dashboard');
 Route::get('/user/dashboard', [HomeController::class, 'userDashboard'])->name('user.dashboard');
 
-//Route Peminjaman
-Route::get('/user/peminjaman', [BorrowingController::class, 'Peminjaman'])->name('peminjaman');
+Route::get('/user/peminjaman', [BorrowingController::class, 'Peminjaman'])->name('user.peminjaman');
+Route::post('/user/peminjaman', [BorrowingController::class, 'store'])->name('user.peminjaman.store');
+Route::put('/user/peminjaman/{id}/update', [BorrowingController::class, 'update'])->name('user.peminjaman.update');
+Route::get('/user/peminjaman/{id}/destroy', [BorrowingController::class, 'destroy'])->name('user.peminjaman.destroy');
+
+//Route Admin
+
+Route::get('/admin/dashboard', [HomeController::class, 'adminDashboard'])->name('admin.dashboard');
 
 Route::get('/admin/user', [AuthController::class, 'User'])->name('admin.user');
 Route::post('/admin/user', [AuthController::class, 'store'])->name('admin.user.store');
@@ -76,9 +60,7 @@ Route::get('/admin/fasilitas/{id}/destroy', [FacilityController::class, 'destroy
 
 Route::get('/admin/peminjaman', [BorrowingController::class, 'Peminjaman'])->name('admin.peminjaman');
 Route::post('/admin/peminjaman', [BorrowingController::class, 'store'])->name('admin.peminjaman.store');
-Route::put('/admin/peminjaman/{id}/update', [BorrowingController::class, 'update'])->name('admin.peminjaman.update');
-Route::get('/admin/peminjaman/{id}/destroy', [BorrowingController::class, 'destroy'])->name('admin.peminjaman.destroy');
 
-Route::get('/admin/peminjaman', [BorrowingController::class, 'adminPeminjaman'])->name('admin.peminjaman');
-Route::get('/admin/fasilitas', [FacilityController::class, 'Fasilitas'])->name('admin.fasilitas');
-Route::get('/admin/laporan', [BorrowingController::class, 'adminPeminjaman'])->name('admin.laporan');
+Route::get('/admin/laporan', [BorrowingController::class, 'Laporan'])->name('admin.laporan');
+Route::put('/admin/laporan/{id}/update', [BorrowingController::class, 'update'])->name('admin.laporan.update');
+Route::get('/admin/peminjaman/{id}/destroy', [BorrowingController::class, 'destroy'])->name('admin.peminjaman.destroy');

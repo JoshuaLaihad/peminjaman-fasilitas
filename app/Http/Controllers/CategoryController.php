@@ -12,7 +12,6 @@ class CategoryController extends Controller
         // Retrieve all categories
         
         $categories = Category::all();
-
         // Return the categories to a view (e.g., categories.index)
         return view('admin.kategori', compact('categories'));
     }

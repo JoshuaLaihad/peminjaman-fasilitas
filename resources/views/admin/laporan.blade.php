@@ -63,13 +63,13 @@
 						<li class="nav-item dropdown hidden-caret">
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 								<div class="avatar-sm">
-									<img src="/assets/img/profile.jpg" alt="." class="avatar-img rounded-circle">
+									<img src="../../assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle">
 								</div>
 							</a>
 							<ul class="dropdown-menu dropdown-user animated fadeIn">
 								<li>
 									<div class="user-box">
-										<div class="avatar-lg"><img src="/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
+										<div class="avatar-lg"><img src="../../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
 										<div class="u-text">
 											<h4>Hizrian</h4>
 											<p class="text-muted">hello@example.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
@@ -94,8 +94,6 @@
 			</nav>
 			<!-- End Navbar -->
 		</div>
-
-		<!-- Sidebar -->
 		<div class="sidebar">
 			
 			<div class="sidebar-background"></div>
@@ -239,240 +237,56 @@
 			<div class="content">
 				<div class="page-inner">
 					<div class="page-header">
-						<h4 class="page-title">Data Laporan</h4>
+						<h4 class="page-title">Data Peminjaman</h4>
 					</div>
 					<div class="row">
 
 						<div class="col-md-12">
 							<div class="card">
-								<div class="card-header">
-									<div class="d-flex align-items-center">
-										<h4 class="card-title">Data Laporan</h4>
-										<button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal">
-											<i class="fa fa-plus"></i>
-											Tambah Data
-										</button>
-									</div>
-								</div>
 								<div class="card-body">
-									<!-- Modal -->
-									<div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
-										<div class="modal-dialog" role="document">
-											<div class="modal-content">
-												<div class="modal-header no-bd">
-													<h5 class="modal-title">
-														<span class="fw-mediumbold">
-														New</span> 
-														<span class="fw-light">
-															Row
-														</span>
-													</h5>
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-														<span aria-hidden="true">&times;</span>
-													</button>
-												</div>
-												<div class="modal-body">
-													<p class="small">Create a new row using this form, make sure you fill them all</p>
-													<form>
-														<div class="row">
-															<div class="col-sm-12">
-																<div class="form-group form-group-default">
-																	<label>Name</label>
-																	<input id="addName" type="text" class="form-control" placeholder="fill name">
-																</div>
-															</div>
-															<div class="col-md-6 pr-0">
-																<div class="form-group form-group-default">
-																	<label>Position</label>
-																	<input id="addPosition" type="text" class="form-control" placeholder="fill position">
-																</div>
-															</div>
-															<div class="col-md-6">
-																<div class="form-group form-group-default">
-																	<label>Office</label>
-																	<input id="addOffice" type="text" class="form-control" placeholder="fill office">
-																</div>
-															</div>
-														</div>
-													</form>
-												</div>
-												<div class="modal-footer no-bd">
-													<button type="button" id="addRowButton" class="btn btn-primary">Add</button>
-													<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-												</div>
-											</div>
-										</div>
-									</div>
-
 									<div class="table-responsive">
 										<table id="add-row" class="display table table-striped table-hover" >
 											<thead>
 												<tr>
-													<th>Name</th>
-													<th>Position</th>
-													<th>Office</th>
+													<th>No</th>
+													<th>Nama</th>
+													<th>Kategori Fasilitas</th>
+													<th>Nama Fasilitas</th>
+													<th>Tanggal Mulai</th>
+													<th>Tanggal Sampai</th>
+													<th>Status</th>
 													<th style="width: 10%">Action</th>
 												</tr>
 											</thead>
 											<tfoot>
 												<tr>
-													<th>Name</th>
-													<th>Position</th>
-													<th>Office</th>
-													<th>Action</th>
+													<th>No</th>
+													<th>Nama</th>
+													<th>Kategori Fasilitas</th>
+													<th>Nama Fasilitas</th>
+													<th>Tanggal Mulai</th>
+													<th>Tanggal Sampai</th>
+													<th>Status</th>
+													<th style="width: 10%">Action</th>
 												</tr>
 											</tfoot>
 											<tbody>
+												@php $no=1 @endphp
+												@foreach ($borrowings as $row)
 												<tr>
-													<td>Tiger Nixon</td>
-													<td>System Architect</td>
-													<td>Edinburgh</td>
-													<td>
-														<div class="form-button-action">
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-																<i class="fa fa-edit"></i>
-															</button>
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-																<i class="fa fa-times"></i>
-															</button>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>Garrett Winters</td>
-													<td>Accountant</td>
-													<td>Tokyo</td>
-													<td>
-														<div class="form-button-action">
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-																<i class="fa fa-edit"></i>
-															</button>
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-																<i class="fa fa-times"></i>
-															</button>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>Ashton Cox</td>
-													<td>Junior Technical Author</td>
-													<td>San Francisco</td>
-													<td>
-														<div class="form-button-action">
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-																<i class="fa fa-edit"></i>
-															</button>
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-																<i class="fa fa-times"></i>
-															</button>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>Cedric Kelly</td>
-													<td>Senior Javascript Developer</td>
-													<td>Edinburgh</td>
-													<td>
-														<div class="form-button-action">
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-																<i class="fa fa-edit"></i>
-															</button>
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-																<i class="fa fa-times"></i>
-															</button>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>Airi Satou</td>
-													<td>Accountant</td>
-													<td>Tokyo</td>
-													<td>
-														<div class="form-button-action">
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-																<i class="fa fa-edit"></i>
-															</button>
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-																<i class="fa fa-times"></i>
-															</button>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>Brielle Williamson</td>
-													<td>Integration Specialist</td>
-													<td>New York</td>
-													<td>
-														<div class="form-button-action">
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-																<i class="fa fa-edit"></i>
-															</button>
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-																<i class="fa fa-times"></i>
-															</button>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>Herrod Chandler</td>
-													<td>Sales Assistant</td>
-													<td>San Francisco</td>
-													<td>
-														<div class="form-button-action">
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-																<i class="fa fa-edit"></i>
-															</button>
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-																<i class="fa fa-times"></i>
-															</button>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>Rhona Davidson</td>
-													<td>Integration Specialist</td>
-													<td>Tokyo</td>
-													<td>
-														<div class="form-button-action">
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-																<i class="fa fa-edit"></i>
-															</button>
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-																<i class="fa fa-times"></i>
-															</button>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>Colleen Hurst</td>
-													<td>Javascript Developer</td>
-													<td>San Francisco</td>
-													<td>
-														<div class="form-button-action">
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-																<i class="fa fa-edit"></i>
-															</button>
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-																<i class="fa fa-times"></i>
-															</button>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>Sonya Frost</td>
-													<td>Software Engineer</td>
-													<td>Edinburgh</td>
-													<td>
-														<div class="form-button-action">
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-																<i class="fa fa-edit"></i>
-															</button>
-															<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
-																<i class="fa fa-times"></i>
-															</button>
-														</div>
-													</td>
-												</tr>
+													<td>{{$no++}}</td>
+													<td>{{ Auth::user()->name }}</td>
+													<td>{{$row->facility->category->kategori_fasilitas}}</td>
+													<td>{{$row->facility->nama_fasilitas}}</td>
+													<td>{{$row->tanggal_dari}}</td>
+													<td>{{$row->tanggal_sampai}}</td>
+													<td>{{$row->status}}</td>
+												   <td>
+													 <a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
+													 <a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>
+													 </td>
+												 </tr>
+												@endforeach
 											</tbody>
 										</table>
 									</div>
@@ -485,6 +299,80 @@
 			
 		</div>
 		
+		{{-- Modal Edit --}}
+		@foreach ($borrowings as $d)
+		<div class="modal fade" id="modalEdit{{ $d->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header no-bd">
+						<h3 class="modal-title">
+							<span class="fw-mediumbold">Edit</span>
+							<span class="fw-mediumbold">User</span>
+						</h3>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form method="POST" action="{{ route('admin.laporan.update', $d->id) }}" enctype="multipart/form-data">
+						@csrf
+						@method('PUT')
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="name" class="form-label">Nama Peminjam</label>
+								<input type="text" class="form-control" id="name" name="name" value="{{ Auth::user()->name }}" readonly>
+							</div> 
+							<div class="form-group">
+								<label for="no_handphone" class="form-label"></label>
+								<input type="text" class="form-control" id="no_handphone" name="no_handphone" value="{{ Auth::user()->no_handphone }}" readonly>
+							</div> 
+							<div class="form-group">
+								<label for="asal_instansi" class="form-label"></label>
+								<input type="text" class="form-control" id="asal_instansi" name="asal_instansi" value="{{ Auth::user()->asal_instansi }}" readonly>
+							</div> 
+							
+							<h2>Informasi Aset</h2>
+								<div class="form-group">
+									<label for="category">Select Category</label>
+									<input type="text" class="form-control" id="category" name="category_id" value="{{ $d->facility->category->kategori_fasilitas }}" readonly>
+								</div>
+								<div class="form-group">
+									<label for="facility">Select Facility</label>
+									<input type="text" class="form-control" id="facility" name="facility_id" value="{{ $d->facility->nama_fasilitas }}" readonly>
+								</div>
+								<div class="form-group">
+									<label for="tanggal_dari" class="form-label">Tanggal Mulai</label>
+									<input type="date" class="form-control" id="tanggal_dari" name="tanggal_dari" value="{{ $d->tanggal_dari }}" readonly>
+								</div>
+								<div class="form-group">
+									<label for="tanggal_sampai" class="form-label">Tanggal Sampai</label>
+									<input type="date" class="form-control" id="tanggal_sampai" name="tanggal_sampai" value="{{ $d->tanggal_sampai }}" readonly>
+								</div>
+								<div class="form-group">
+								<h5>Role</h5>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="status" id="statusPending{{ $d->id }}" value="pending" {{ $d->status == 'pending' ? 'checked' : '' }} required>
+									<label class="form-check-label" for="statusPending{{ $d->id }}">Pending</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="status" id="statusDitolak{{ $d->id }}" value="ditolak" {{ $d->status == 'ditolak' ? 'checked' : '' }} required>
+									<label class="form-check-label" for="statusDitolak{{ $d->id }}">Ditolak</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="status" id="statusDiterima{{ $d->id }}" value="diterima" {{ $d->status == 'diterima' ? 'checked' : '' }} required>
+									<label class="form-check-label" for="statusDiterima{{ $d->id }}">Diterima</label>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary"><i></i>Save Changes</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal"><i></i>Undo</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		@endforeach
+		{{-- End Modal Edit --}}
 		<!-- Custom template | don't include it in your project! -->
 		<div class="custom-template">
 				<div class="title">Settings</div>

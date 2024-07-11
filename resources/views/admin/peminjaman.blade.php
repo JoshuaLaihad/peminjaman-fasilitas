@@ -63,13 +63,13 @@
 						<li class="nav-item dropdown hidden-caret">
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 								<div class="avatar-sm">
-									<img src="/assets/img/profile.jpg" alt="." class="avatar-img rounded-circle">
+									<img src="../../assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle">
 								</div>
 							</a>
 							<ul class="dropdown-menu dropdown-user animated fadeIn">
 								<li>
 									<div class="user-box">
-										<div class="avatar-lg"><img src="/assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
+										<div class="avatar-lg"><img src="../../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded"></div>
 										<div class="u-text">
 											<h4>Hizrian</h4>
 											<p class="text-muted">hello@example.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
@@ -94,7 +94,6 @@
 			</nav>
 			<!-- End Navbar -->
 		</div>
-
 		<!-- Sidebar -->
 		<div class="sidebar">
 			
@@ -239,118 +238,70 @@
 			<div class="content">
 				<div class="page-inner">
 					<div class="page-header">
-						<h4 class="page-title">Data Peminjaman</h4>
+						<h4 class="page-title">Daftar Peminjaman Aset</h4>
 					</div>
-					<div class="row">
-
-						<div class="col-md-12">
-							<div class="card">
-								<div class="card-header">
-									<div class="d-flex align-items-center">
-										<h4 class="card-title">Data Peminjaman</h4>
-										<button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal">
-											<i class="fa fa-plus"></i>
-											Tambah Data
-										</button>
-									</div>
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">Form Peminjaman Aset</div>
+						</div>
+						<div class="card-body">
+							<!-- Form Peminjaman -->
+							<form action="{{ route('admin.peminjaman.store') }}" method="POST">
+								@csrf
+								<!-- Informasi Peminjam -->
+								<h2>Informasi Peminjam</h2>
+								<div class="form-group">
+									<label for="name" class="form-label">Nama Peminjam</label>
+									<input type="text" class="form-control" id="name" name="name" value="{{ Auth::user()->name }}" readonly>
+								</div> 
+								<div class="form-group">
+									<label for="no_handphone" class="form-label"></label>
+									<input type="text" class="form-control" id="no_handphone" name="no_handphone" value="{{ Auth::user()->no_handphone }}" readonly>
+								</div> 
+								<div class="form-group">
+									<label for="asal_instansi" class="form-label"></label>
+									<input type="text" class="form-control" id="asal_instansi" name="asal_instansi" value="{{ Auth::user()->asal_instansi }}" readonly>
+								</div> 
+								<hr> <!-- Garis Pembatas -->
+							
+								<!-- Informasi Aset -->
+								<h2>Informasi Aset</h2>
+								<div class="form-group">
+									<label for="category">Select Category</label>
+									<select name="category_id" id="category" class="form-control">
+										@foreach($facilities as $facility)
+											@if($facility->category)
+												<option value="{{ $facility->category->id }}">{{ $facility->category->kategori_fasilitas }}</option>
+											@endif
+										@endforeach
+									</select>
 								</div>
-								<div class="card-body">
-									<!-- Modal Tambah-->
-									<div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-hidden="true">
-										<div class="modal-dialog" role="document">
-											<div class="modal-content">
-												<div class="modal-header no-bd">
-													<h3 class="modal-title">
-														<span class="fw-mediumbold">Tambah</span> 
-														<span class="fw-mediumbold">Kategori Fasilitas</span>
-													</h3>
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-														<span aria-hidden="true">&times;</span>
-													</button>
-												</div>
-												<form action="{{ route('admin.peminjaman.store') }}" method="POST">
-													@csrf
-													<div class="mb-3">
-														<label for="fasilitas_id" class="form-label">Facility</label>
-														<select class="form-select" id="fasilitas_id" name="fasilitas_id" required>
-															<option selected disabled>Select a facility</option>
-															@foreach($facilities as $facility)
-																<option value="{{ $facility->id }}">{{ $facility->name }}</option>
-															@endforeach
-														</select>
-													</div>
-													<div class="mb-3">
-														<label for="user_id" class="form-label">User</label>
-														<select class="form-select" id="user_id" name="user_id" required>
-															<option selected disabled>Select a user</option>
-															@foreach($users as $user)
-																<option value="{{ $user->id }}">{{ $user->name }}</option>
-															@endforeach
-														</select>
-													</div>
-													<div class="mb-3">
-														<label for="tanggal_dari" class="form-label">Start Date</label>
-														<input type="date" class="form-control" id="tanggal_dari" name="tanggal_dari" required>
-													</div>
-													<div class="mb-3">
-														<label for="tanggal_sampai" class="form-label">End Date</label>
-														<input type="date" class="form-control" id="tanggal_sampai" name="tanggal_sampai" required>
-													</div>
-													<div class="mb-3">
-														<label for="status" class="form-label">Status</label>
-														<select class="form-select" id="status" name="status" required>
-															<option selected disabled>Select status</option>
-															<option value="pending">Pending</option>
-															<option value="diterima">Diterima</option>
-															<option value="ditolak">Ditolak</option>
-														</select>
-													</div>
-													<button type="submit" class="btn btn-primary">Save</button>
-												</form>
-											</div>
-										</div>
-									</div>
-									{{-- End Modal Tambah --}}
-
-									<div class="table-responsive">
-										<table id="add-row" class="display table table-striped table-hover" >
-											<thead>
-												<tr>
-													<th>No</th>
-													<th>Nama</th>
-													<th style="width: 10%">Action</th>
-												</tr>
-											</thead>
-											<tfoot>
-												<tr>
-													<th>No</th>
-													<th>Nama</th>
-													<th style="width: 10%">Action</th>
-												</tr>
-											</tfoot>
-											<tbody>
-												@php $no=1 @endphp
-												@foreach ($categories as $row)
-												   <tr>
-												   <td>{{$no++}}</td>
-												   <td>{{$row->kategori_fasilitas}}</td>
-												  <td>
-													<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
-													<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>
-													</td>
-												</tr>
-												@endforeach
-											</tbody>
-										</table>
-									</div>
+								<div class="form-group">
+									<label for="facility">Select Facility</label>
+									<select name="facility_id" id="facility" class="form-control">
+										<option value="" disabled selected>Pilih Fasilitas</option>
+									</select>
 								</div>
-							</div>
+								<div class="form-group">
+									<label for="tanggal_dari" class="form-label">Tanggal Mulai</label>
+									<input type="date" class="form-control" id="tanggal_dari" name="tanggal_dari" required>
+								</div>
+								<div class="form-group">
+									<label for="tanggal_sampai" class="form-label">Tanggal Sampai</label>
+									<input type="date" class="form-control" id="tanggal_sampai" name="tanggal_sampai" required>
+								</div>
+								<div class="modal-footer">
+									<button type="submit" class="btn btn-primary"><i></i>Save Changes</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
 			</div>
-			
 		</div>
+
+		
+
 		
 		<!-- Custom template | don't include it in your project! -->
 		<div class="custom-template">
@@ -449,5 +400,34 @@
 			});
 		});
 	</script>
+
+	
+	<script>
+		var categorySelect = document.getElementById('category');
+		var facilitySelect = document.getElementById('facility');
+		var facilities = @json($facilities);
+	
+		function updateFacilities() {
+			var selectedCategoryId = categorySelect.value;
+			facilitySelect.innerHTML = '<option value="" disabled selected>Pilih Fasilitas</option>';
+	
+			facilities.forEach(function(facility) {
+				if (facility.category && facility.category.id == selectedCategoryId) {
+					var facilityOption = document.createElement('option');
+					facilityOption.value = facility.id;
+					facilityOption.textContent = facility.nama_fasilitas;
+					facilitySelect.appendChild(facilityOption);
+				}
+			});
+			facilitySelect.disabled = false;
+		}
+	
+		categorySelect.addEventListener('change', updateFacilities);
+	
+		document.addEventListener('DOMContentLoaded', function() {
+			updateFacilities();
+		});
+	</script>
+	
 </body>
 </html>
