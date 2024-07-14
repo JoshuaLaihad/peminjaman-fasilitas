@@ -71,7 +71,7 @@
 											<div class="modal-body">
 												<div class="form-group">
 													<label>Kategori Fasilitas</label>
-													<input type="text" class="form-control" name="name" value="{{ $d->name }}" placeholder="" required>
+													<input type="text" class="form-control" name="kategori_fasilitas" id="kategori_fasilitas" value="{{ $d->kategori_fasilitas }}" placeholder="" required>
 												</div>
 											</div>
 											<div class="modal-footer">

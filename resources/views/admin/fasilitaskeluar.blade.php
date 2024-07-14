@@ -37,9 +37,10 @@
 											@csrf
 											<div class="modal-body">
 												<div class="form-group">
-													@if ($categories->count() > 0)
-														<label for="category">Select Category</label>
-														<select name="categories_id" id="category" class="form-control">
+													@if($categories->count() > 0)
+														<label for="categories_id" class="form-label">Kategori Fasilitas</label>
+														<select class="form-select" id="categories_id" name="categories_id" required>
+															<option selected disabled>Select a Kategori Fasilitas</option>
 															@foreach($categories as $category)
 																<option value="{{ $category->id }}">{{ $category->kategori_fasilitas }}</option>
 															@endforeach
@@ -47,31 +48,31 @@
 													@else
 														<p>No categories available.</p>
 													@endif
-												</div>
+												</div>                                      
 												<div class="form-group">
 													<label>Nama Fasilitas</label>
 													<input type="text" class="form-control" name="nama_fasilitas" placeholder="Nama Fasilitas..." required>
-												</div>
+												</div>                                      
 												<div class="form-group">
 													<label>Merk</label>
 													<input type="text" class="form-control" name="merk" placeholder="Nama Merk..." required>
-												</div>
+												</div>                                      
 												<div class="form-group">
 													<label>Model</label>
 													<input type="text" class="form-control" name="model" placeholder="Nama Model..." required>
-												</div>
+												</div>                                      
 												<div class="form-group">
 													<label>Stok</label>
 													<input type="number" class="form-control" name="stok" placeholder="Jumlah Stok..." required>
-												</div>
+												</div>                                      
 												<div class="form-group">
 													<label>Status</label>
 													<input type="text" class="form-control" name="status" placeholder="Nama Status..." required>
-												</div>
+												</div> 
 												<div class="form-group">
 													<label>Tanggal</label>
 													<input type="date" class="form-control" name="tanggal" placeholder="Tanggal..." required>
-												</div>
+												</div>                                      
 											</div>
 											<div class="modal-footer">
 												<button type="submit" class="btn btn-primary"><i></i>Save Changes</button>
@@ -102,43 +103,42 @@
 											@method('PUT')
 											<div class="modal-body">
 												<div class="form-group">
-													@if ($categories->count() > 0)
-														<label for="category">Select Category</label>
-														<select name="categories_id" id="category" class="form-control">
+													@if($categories->count() > 0)
+														<label for="categories_id" class="form-label">Kategori Fasilitas</label>
+														<select class="form-select" id="categories_id" name="categories_id" required>
 															@foreach($categories as $category)
-																<option value="{{ $category->id }}">{{ $category->kategori_fasilitas }}</option>
+																<option value="{{ $category->id }}" @if($category->id == $d->categories_id) selected @endif>{{ $category->kategori_fasilitas }}</option>
 															@endforeach
 														</select>
 													@else
 														<p>No categories available.</p>
 													@endif
-												</div>
+												</div>                                      
 												<div class="form-group">
 													<label>Nama Fasilitas</label>
 													<input type="text" class="form-control" name="nama_fasilitas" value="{{ $d->nama_fasilitas }}" placeholder="Nama Fasilitas..." required>
-												</div>
+												</div>      
 												<div class="form-group">
 													<label>Merk</label>
 													<input type="text" class="form-control" name="merk" value="{{ $d->merk }}" placeholder="Nama Merk..." required>
-												</div>
+												</div>                                      
 												<div class="form-group">
-													<label>Model</label>
-													<input type="text" class="form-control" name="model" value="{{ $d->model }}" placeholder="Nama Model..." required>
-												</div>
+														<label>Model</label>
+														<input type="text" class="form-control" name="model" value="{{ $d->model }}" placeholder="Nama Model..." required>
+												</div>                                      
 												<div class="form-group">
-													<label>Stok</label>
-													<input type="number" class="form-control" name="stok" value="{{ $d->stok }}" placeholder="Jumlah Stok..." required>
-												</div>
+														<label>Stok</label>
+														<input type="number" class="form-control" name="stok" value="{{ $d->stok }}" placeholder="Jumlah Stok..." required>
+												</div>                                      
 												<div class="form-group">
-													<label>Status</label>
-													<input type="text" class="form-control" name="status" value="{{ $d->status }}" placeholder="Nama Status..." required>
-												</div>
+														<label>Status</label>
+														<input type="text" class="form-control" name="status" value="{{ $d->status }}" placeholder="Status..." required>
+												</div>                                  
 												<div class="form-group">
-													<label>Tanggal</label>
-													<input type="date" class="form-control" name="tanggal" value="{{ $d->tanggal }}" placeholder="Tanggal..." required>
-												</div>
+														<label>Tanggal</label>
+														<input type="date" class="form-control" name="tanggal" value="{{ $d->tanggal }}" placeholder="Tanggal..." required>
+												</div>                                  
 											</div>
-											
 											<div class="modal-footer">
 												<button type="submit" class="btn btn-primary">Save Changes</button>
 												<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -214,20 +214,22 @@
 									<tbody>
 										@php $no=1 @endphp
 										@foreach ($facilities as $row)
-										   <tr>
-										   <td>{{$no++}}</td>
-										   <td>{{$row->category->kategori_fasilitas}}</td>
-										   <td>{{$row->nama_fasilitas}}</td>
-										   <td>{{$row->merk}}</td>
-										   <td>{{$row->model}}</td>
-										   <td>{{$row->stok}}</td>
-										   <td>{{$row->status}}</td>
-										   <td>{{$row->tanggal}}</td>
-										  <td>
-											<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
-											<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>
-											</td>
-										</tr>
+											@if ($row->status == 'Rusak' || $row->status == 'Dipinjam')
+											<tr>
+												<td>{{$no++}}</td>
+												<td>{{$row->category->kategori_fasilitas}}</td>
+												<td>{{$row->nama_fasilitas}}</td>
+												<td>{{$row->merk}}</td>
+												<td>{{$row->model}}</td>
+												<td>{{$row->stok}}</td>
+												<td>{{$row->status}}</td>
+												<td>{{$row->tanggal}}</td>
+												<td>
+													<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
+													<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>
+												</td>
+											</tr>
+											@endif
 										@endforeach
 									</tbody>
 								</table>

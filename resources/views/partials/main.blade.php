@@ -160,5 +160,75 @@
 	});
 </script>
 
+@if (isset($facilities) && isset($categories))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let categories = @json($categories);
+        let facilities = @json($facilities);
+
+        console.log("Categories: ", categories);
+        console.log("Facilities: ", facilities);
+
+        document.getElementById('category').addEventListener('change', function () {
+            let categoryId = this.value;
+            let facilitySelect = document.getElementById('facility');
+            facilitySelect.innerHTML = '<option value="" disabled selected>Select Facility</option>';
+
+            let filteredFacilities = facilities.filter(facility => facility.categories_id == categoryId)
+                .map(facility => facility.nama_fasilitas)
+                .filter((value, index, self) => self.indexOf(value) === index);
+
+            console.log("Filtered Facilities: ", filteredFacilities);
+
+            filteredFacilities.forEach(facility => {
+                let option = document.createElement('option');
+                option.value = facility;
+                option.textContent = facility;
+                facilitySelect.appendChild(option);
+            });
+
+            facilitySelect.disabled = false;
+            document.getElementById('merk').disabled = true;
+            document.getElementById('model').disabled = true;
+            document.getElementById('stok').disabled = true;
+        });
+
+        document.getElementById('facility').addEventListener('change', function () {
+            let facilityName = this.value;
+            let merkSelect = document.getElementById('merk');
+            merkSelect.innerHTML = '<option value="" disabled selected>Select Merk</option>';
+
+            let filteredMerks = facilities.filter(facility => facility.nama_fasilitas == facilityName)
+                .map(facility => facility.merk)
+                .filter((value, index, self) => self.indexOf(value) === index); // Tambahkan filter unik disini
+
+            console.log("Filtered Merks: ", filteredMerks);
+
+            filteredMerks.forEach(merk => {
+                let option = document.createElement('option');
+                option.value = merk;
+                option.textContent = merk;
+                merkSelect.appendChild(option);
+            });
+
+            merkSelect.disabled = false;
+        });
+
+        document.getElementById('merk').addEventListener('change', function () {
+            let merkName = this.value;
+            let facilityName = document.getElementById('facility').value;
+            let facility = facilities.find(facility => facility.nama_fasilitas == facilityName && facility.merk == merkName);
+
+            console.log("Selected Facility: ", facility);
+
+            document.getElementById('model').value = facility.model;
+            document.getElementById('stok').value = facility.stok;
+            document.getElementById('model').disabled = false;
+            document.getElementById('stok').disabled = false;
+        });
+    });
+</script>
+@endif
+
 </body>
 </html>

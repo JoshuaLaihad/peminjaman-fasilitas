@@ -19,6 +19,6 @@ class Category extends Model
 
     public function facilities()
     {
-        return $this->hasMany(Facility::class, 'categories_id' );
+        return $this->hasMany(Facility::class, 'categories_id', 'id');
     }
 }

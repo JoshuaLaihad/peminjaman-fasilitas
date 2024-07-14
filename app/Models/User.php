@@ -17,6 +17,14 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+     public function isAdmin()
+     {
+         // Misalnya jika Anda memiliki field 'role' di tabel users
+         return $this->role === 'admin';
+     }
+     
+ 
     protected $fillable = [
         'name',
         'username',

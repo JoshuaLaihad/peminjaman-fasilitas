@@ -9,48 +9,70 @@ class FacilityController extends Controller
 {
     public function Fasilitas()
     {
-        $categories = Category::all();
-        $facilities = Facility::all();
-        return view('admin.fasilitas', compact('categories', 'facilities'));
-        
+        $facilities = Facility::with('category')->get();
+        $categories = Category::all(); // Ambil semua kategori
+        return view('admin.fasilitas', compact('facilities', 'categories'));
     }
 
     public function store(Request $request)
-    {
-        // Validate the request
-        $request->validate([
-            'categories_id' => 'required|exists:categories,id', // Validate the categories_id exists in categories table
-            'nama_fasilitas' => 'required|string|max:255|unique:facilities,nama_fasilitas', // Ensure it's unique in facilities table
-        ]);
+{
+    $request->validate([
+        'categories_id' => 'required|exists:categories,id',
+        'nama_fasilitas' => 'required|string|max:255',
+        'merk' => 'required|string|max:255',
+        'model' => 'required|string|max:255',
+        'stok' => 'required|integer|min:0',
+        'status' => 'required|string|max:255',
+        'tanggal' => 'required|date',
+    ]);
     
-        // Create the facility
-        $facility = Facility::create([
-            'categories_id' => $request->categories_id, // Ensure this matches the input name
-            'nama_fasilitas' => $request->nama_fasilitas, // Ensure this matches the input name
+        Facility::create([
+            'categories_id' => $request->categories_id,
+            'nama_fasilitas' => $request->nama_fasilitas,
+            'merk' => $request->merk,
+            'model' => $request->model,
+            'stok' => $request->stok,
+            'status' => $request->status,
+            'tanggal' => $request->tanggal,
         ]);
-    
-        // Redirect with success message
+
         return redirect()->route('admin.fasilitas')->with('success', 'Data berhasil ditambahkan');
     }
-    
+
+
     public function update(Request $request, $id)
     {
-    
-        $request->validate([
-            'categories_id' => 'required|exists:categories,id', // Validate the categories_id exists in categories table
-            'nama_fasilitas' => 'required|string|max:255', // Ensure it's unique in facilities table
+        $validatedData = $request->validate([
+            'categories_id' => 'required|exists:categories,id',
+            'nama_fasilitas' => 'required|string|max:255',
+            'merk' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'stok' => 'required|integer',
+            'status' => 'required|string|max:255',
+            'tanggal' => 'required|date',
         ]);
 
-    $facilities = Facility::findOrFail($id);
+        $facility = Facility::findOrFail($id);
 
-    $fasilitas = [
-        'categories_id' => $request->categories_id, // Ensure this matches the input name
-        'nama_fasilitas' => $request->nama_fasilitas, // Ensure this matches the input name
-    ];
+        $isStatusChanged = $validatedData['status'] != $facility->status;
+        $isStokChanged = $validatedData['stok'] != $facility->stok;
+        $isTanggalChanged = $validatedData['tanggal'] != $facility->tanggal;
 
-    $facilities->update($fasilitas);
+        if ($isStatusChanged && $isStokChanged && $isTanggalChanged) {
+            $newDataFacility = $facility->replicate();
+            $newDataFacility->status = $validatedData['status'];
+            $newDataFacility->tanggal = $validatedData['tanggal'];
+            $newDataFacility->stok = $validatedData['stok'];
 
-    return redirect()->route('admin.fasilitas')->with('success', 'Data berhasil diperbarui');
+            $newDataFacility->save();
+
+            $facility->stok -= $validatedData['stok'];
+            $facility->save();
+        } else {
+            $facility->update($validatedData);
+        }
+
+        return redirect()->route('admin.fasilitas')->with('success', 'Data fasilitas berhasil diperbarui');
     }
 
     public function destroy($id)

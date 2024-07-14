@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Borrowing;
-use App\Models\Category;
 use App\Models\Facility;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,20 +12,21 @@ class BorrowingController extends Controller
     // Display a listing of the resource.
     public function Peminjaman()
     {
+        $borrowings = Borrowing::with(['facility', 'user'])
+            ->when(!Auth::user()->is_admin, function($query) {
+                return $query->where('user_id', Auth::id());
+            })
+            ->get();
+
+        $facilities = Facility::with('category')->get();
+        $categories = $facilities->pluck('category')->unique('id');
+
         if (Auth::user()->is_admin) {
-            // For admin
-            $borrowings = Borrowing::with(['facility', 'user'])->get();
-            $facilities = Facility::with('category')->get();
-            return view('admin.peminjaman', compact('borrowings', 'facilities'));
+            return view('admin.peminjaman', compact('borrowings', 'categories', 'facilities'));
         } else {
-            // For regular user
-            $borrowings = Borrowing::with(['facility', 'user'])
-                ->where('user_id', Auth::id())
-                ->get();
-            $facilities = Facility::with('category')->get();
-            return view('user.peminjaman', compact('borrowings', 'facilities'));
+            return view('user.peminjaman', compact('borrowings', 'categories', 'facilities'));
         }
-        
+
     }
 
     public function Laporan()
@@ -50,17 +49,43 @@ class BorrowingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'name' => 'required|string|max:255',
+            'asal_instansi' => 'required|string|max:255',
+            'no_handphone' => 'required|string|max:15',
             'facility_id' => 'required|exists:facilities,id', // Sesuaikan dengan nama input di form
-            'tanggal_mulai' => 'required|date', // Sesuaikan dengan nama input di form
-            'tanggal_sampai' => 'required|date|after:tanggal_mulai', // Sesuaikan dengan nama input di form
+            'merk' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'stok' => 'required|integer',
+            'tanggal_dari' => 'required|date', // Sesuaikan dengan nama input di form
+            'tanggal_sampai' => 'required|date|after:tanggal_dari', // Sesuaikan dengan nama input di form
         ]);
 
+         // Kurangi stok dari aset yang dipilih
+         $facility = Facility::findOrFail($request->facility_id);
+
+         // Pastikan stok cukup untuk dipinjam
+         // Pastikan stok cukup untuk dipinjam
+        if ($facility->stok < $request->stok) {
+            return redirect()->back()->with('error', 'Stok tidak mencukupi untuk peminjaman.');
+        }
+
+        // Kurangi stok pada data fasilitas yang lama
+        $facility->stok -= $request->stok;
+        $facility->save();
+
+        // Buat peminjaman baru
         Borrowing::create([
-            'fasilitas_id' => $request->facility_id, // Sesuaikan dengan nama input di form
-            'user_id' => Auth::id(), // Mendapatkan ID pengguna yang sedang login
-            'tanggal_dari' => $request->tanggal_mulai, // Sesuaikan dengan nama input di form
-            'tanggal_sampai' => $request->tanggal_sampai, // Sesuaikan dengan nama input di form
+            'facility_id' => $request->facility_id,
+            'user_id' => Auth::id(),
+            'tanggal_dari' => $request->tanggal_dari,
+            'tanggal_sampai' => $request->tanggal_sampai,
         ]);
+
+        // Buat duplikasi data fasilitas dengan stok yang dikurangi dan status 'Dipinjam'
+        $newFacility = $facility->replicate();
+        $newFacility->stok = $request->stok;
+        $newFacility->status = 'Dipinjam';
+        $newFacility->save();
 
         if (Auth::user()->is_admin) {
             // Redirect ke view admin.peminjaman

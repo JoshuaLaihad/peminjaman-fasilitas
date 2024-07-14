@@ -16,6 +16,11 @@ class Facility extends Model
     protected $fillable = [
         'categories_id',
         'nama_fasilitas',
+        'merk',
+        'model',
+        'stok',
+        'status',
+        'tanggal',
     ];
 
 

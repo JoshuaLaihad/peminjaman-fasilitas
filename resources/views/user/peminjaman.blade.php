@@ -35,25 +35,38 @@
 						<div class="form-group">
 							<label for="category">Select Category</label>
 							<select name="category_id" id="category" class="form-control">
-								@foreach($facilities as $facility)
-									@if($facility->category)
-										<option value="{{ $facility->category->id }}">{{ $facility->category->kategori_fasilitas }}</option>
-									@endif
+								<option value="" disabled selected>Select Category</option>
+								@foreach($categories as $category)
+									<option value="{{ $category->id }}">{{ $category->kategori_fasilitas }}</option>
 								@endforeach
 							</select>
 						</div>
 						<div class="form-group">
 							<label for="facility">Select Facility</label>
-							<select name="facility_id" id="facility" class="form-control">
-								<option value="" disabled selected>Pilih Fasilitas</option>
+							<select name="facility_id" id="facility" class="form-control" disabled>
+								<option value="" disabled selected>Select Facility</option>
 							</select>
 						</div>
 						<div class="form-group">
-							<label for="tanggal_dari" class="form-label">Tanggal Mulai</label>
+							<label for="merk">Select Merk</label>
+							<select name="merk" id="merk" class="form-control" disabled>
+								<option value="" disabled selected>Select Merk</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="model">Model</label>
+							<input type="text" class="form-control" id="model" name="model" disabled>
+						</div>
+						<div class="form-group">
+							<label for="stok">Stok</label>
+							<input type="number" class="form-control" id="stok" name="stok" disabled>
+						</div>
+						<div class="form-group">
+							<label for="tanggal_dari">Tanggal Mulai</label>
 							<input type="date" class="form-control" id="tanggal_dari" name="tanggal_dari" required>
 						</div>
 						<div class="form-group">
-							<label for="tanggal_sampai" class="form-label">Tanggal Sampai</label>
+							<label for="tanggal_sampai">Tanggal Sampai</label>
 							<input type="date" class="form-control" id="tanggal_sampai" name="tanggal_sampai" required>
 						</div>
 						<div class="modal-footer">

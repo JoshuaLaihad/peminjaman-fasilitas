@@ -39,11 +39,19 @@
                 </div>
             </div>
             <ul class="nav">
-                <li class="nav-item active">
-                    <a href="{{ route('admin.dashboard') }}">
-                        <i class="fas fa-home"></i>
-                        <p>Dashboard</p>
-                    </a>
+                <li class="nav-item {{ request()->routeIs('admin.dashboard') || request()->routeIs('user.dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-home"></i>
+                    @if(auth()->check())
+                        @if(auth()->user()->isAdmin())
+                            <a href="{{ route('admin.dashboard') }}">
+                                <i class="fas fa-home"></i>Dashboard
+                            </a>
+                        @else
+                            <a href="{{ route('user.dashboard') }}">
+                                <i class="fas fa-home"></i>Dashboard
+                            </a>
+                        @endif
+                    @endif
                 </li>
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
@@ -52,40 +60,19 @@
                     <h4 class="text-section">Components</h4>
                 </li>
                 @if (auth()->user()->role !== 'user')
-                <li class="nav-item">
-                    <a data-toggle="collapse" href="#base">
+                <li class="nav-item {{ request()->routeIs('admin.user') ? 'active' : '' }}">
+                    <a href="{{ route('admin.user') }}">
                         <i class="fas fa-layer-group"></i>
                         <p>Data User</p>
-                        <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="base">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('admin.user') }}">
-                                    <span class="sub-item">Data User</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
-                <li class="nav-item">
-                    <a data-toggle="collapse" href="#forms">
+                <li class="nav-item {{ request()->routeIs('admin.kategori') ? 'active' : '' }}">
+                    <a href="{{ route('admin.kategori') }}">
                         <i class="fas fa-pen-square"></i>
                         <p>Data Kategori</p>
-                        <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="forms">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('admin.kategori') }}">
-                                    <span class="sub-item">Data Kategori</span>
-                                </a>
-                            </li>
-                            
-                        </ul>
-                    </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ request()->routeIs('admin.fasilitas') || request()->routeIs('admin.fasilitaskeluar') ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#tables">
                         <i class="fas fa-pen-square"></i>
                         <p>Data Fasilitas</p>
@@ -97,43 +84,33 @@
                                 <a href="{{ route('admin.fasilitas') }}">
                                     <span class="sub-item">Data Fasilitas</span>
                                 </a>
+                                <a href="{{ route('admin.fasilitaskeluar') }}">
+                                    <span class="sub-item">Data Fasilitas Keluar</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
                 </li>
                 @endif
-                <li class="nav-item">
-                    <a data-toggle="collapse" href="#maps">
-                        <i class="fas fa-pen-square"></i>
-                        <p>Data Peminjaman</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="maps">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('admin.peminjaman') }}">
-                                    <span class="sub-item">Data Peminjaman</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                <li class="nav-item {{ request()->routeIs('admin.peminjaman') || request()->routeIs('user.peminjaman') ? 'active' : '' }}">
+                    @if(auth()->check())
+                        @if(auth()->user()->isAdmin())
+                            <a href="{{ route('admin.peminjaman') }}">
+                                <i class="fas fa-pen-square"></i> Peminjaman
+                            </a>
+                        @else
+                            <a href="{{ route('user.peminjaman') }}">
+                                <i class="fas fa-pen-square"></i> Peminjaman
+                            </a>
+                        @endif
+                    @endif
                 </li>
                 @if (auth()->user()->role !== 'user')
-                <li class="nav-item">
-                    <a data-toggle="collapse" href="#charts">
+                <li class="nav-item {{ request()->routeIs('admin.laporan') ? 'active' : '' }}">
+                    <a href="{{ route('admin.laporan') }}">
                         <i class="far fa-chart-bar"></i>
                         <p>Data Laporan</p>
-                        <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="charts">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('admin.laporan') }}">
-                                    <span class="sub-item">Data Laporan</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
                 @endif
             </ul>

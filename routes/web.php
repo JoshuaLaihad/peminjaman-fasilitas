@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\OutFacilityController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +58,11 @@ Route::get('/admin/fasilitas', [FacilityController::class, 'Fasilitas'])->name('
 Route::post('/admin/fasilitas', [FacilityController::class, 'store'])->name('admin.fasilitas.store');
 Route::put('/admin/fasilitas/{id}/update', [FacilityController::class, 'update'])->name('admin.fasilitas.update');
 Route::get('/admin/fasilitas/{id}/destroy', [FacilityController::class, 'destroy'])->name('admin.fasilitas.destroy');
+
+Route::get('/admin/fasilitaskeluar', [OutFacilityController::class, 'FasilitasKeluar'])->name('admin.fasilitaskeluar');
+Route::post('/admin/fasilitaskeluar', [OutFacilityController::class, 'store'])->name('admin.fasilitaskeluar.store');
+Route::put('/admin/fasilitaskeluar/{id}/update', [OutFacilityController::class, 'update'])->name('admin.fasilitaskeluar.update');
+Route::get('/admin/fasilitaskeluar/{id}/destroy', [OutFacilityController::class, 'destroy'])->name('admin.fasilitaskeluar.destroy');
 
 Route::get('/admin/peminjaman', [BorrowingController::class, 'Peminjaman'])->name('admin.peminjaman');
 Route::post('/admin/peminjaman', [BorrowingController::class, 'store'])->name('admin.peminjaman.store');
