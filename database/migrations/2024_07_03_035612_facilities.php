@@ -15,7 +15,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('categories_id');
             $table->string('nama_fasilitas');
+            $table->string('keterangan_fasilitas')->nullable();
+            $table->string('status')->nullable();
+            $table->integer('jumlah')->nullable();
+            $table->date('tanggal')->nullable();
+            $table->string('nama_file');
             $table->foreign('categories_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

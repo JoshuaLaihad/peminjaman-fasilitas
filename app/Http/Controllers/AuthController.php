@@ -88,7 +88,7 @@ class AuthController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8',
             'no_handphone' => 'required|string|max:15',
-            'asal_instansi' => 'required|string|max:255',
+            'asal_departemen' => 'required|string|max:255',
         ]);
 
         $user = User::create([
@@ -96,7 +96,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'no_handphone' => $request->no_handphone,
-            'asal_instansi' => $request->asal_instansi,
+            'asal_departemen' => $request->asal_departemen,
         ]);
 
         $login = [
@@ -117,7 +117,7 @@ class AuthController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8',
             'no_handphone' => 'required|string|max:15',
-            'asal_instansi' => 'required|string|max:255',
+            'asal_departemen' => 'required|string|max:255',
             'role' => 'required',
         ]);
 
@@ -126,7 +126,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'no_handphone' => $request->no_handphone,
-            'asal_instansi' => $request->asal_instansi,
+            'asal_departemen' => $request->asal_departemen,
             'role' => $request->role, 
         ]);
 
@@ -138,7 +138,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,'.$id,
             'no_handphone' => 'required|numeric',
-            'asal_instansi' => 'required|string|max:255',
+            'asal_departemen' => 'required|string|max:255',
             'password' => 'nullable|string|min:8',
             'role' => 'required',
         ]);
@@ -149,7 +149,7 @@ class AuthController extends Controller
         'name' => $request->name,
         'username' => $request->username,
         'no_handphone' => $request->no_handphone,
-        'asal_instansi' => $request->asal_instansi,
+        'asal_departemen' => $request->asal_departemen,
         'role' => $request->role,
     ];
 

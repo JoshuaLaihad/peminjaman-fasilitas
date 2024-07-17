@@ -13,11 +13,14 @@ class Borrowing extends Model
 
     public $timestamps = false;
 
+    const CREATED_AT = 'created_on';
+
     protected $fillable = [
         'fasilitas_id',
         'user_id',
         'tanggal_dari',
         'tanggal_sampai',
+        'jumlah_dipinjam',
         'status',
     ];
     

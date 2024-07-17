@@ -4,15 +4,25 @@
 	<div class="content">
 		<div class="page-inner">
 			<div class="page-header">
-				<h4 class="page-title">Daftar Peminjaman Aset</h4>
+				<h4 class="page-title">Daftar Peminjaman Aset Admin</h4>
 			</div>
 			<div class="card">
 				<div class="card-header">
 					<div class="card-title">Form Peminjaman Aset</div>
+					@if(session('success'))
+						<div class="alert alert-success">
+							{{ session('success') }}
+						</div>
+					@endif
+					@if(session('error'))
+						<div class="alert alert-danger">
+							{{ session('error') }}
+						</div>
+					@endif
 				</div>
 				<div class="card-body">
 					<!-- Form Peminjaman -->
-					<form action="{{ route('user.peminjaman.store') }}" method="POST">
+					<form action="{{ route('admin.peminjaman.store') }}" method="POST">
 						@csrf
 						<!-- Informasi Peminjam -->
 						<h2>Informasi Peminjam</h2>
@@ -25,8 +35,8 @@
 							<input type="text" class="form-control" id="no_handphone" name="no_handphone" value="{{ Auth::user()->no_handphone }}" readonly>
 						</div> 
 						<div class="form-group">
-							<label for="asal_instansi" class="form-label"></label>
-							<input type="text" class="form-control" id="asal_instansi" name="asal_instansi" value="{{ Auth::user()->asal_instansi }}" readonly>
+							<label for="asal_departemen" class="form-label"></label>
+							<input type="text" class="form-control" id="asal_departemen" name="asal_departemen" value="{{ Auth::user()->asal_departemen }}" readonly>
 						</div> 
 						<hr> <!-- Garis Pembatas -->
 					
@@ -48,18 +58,8 @@
 							</select>
 						</div>
 						<div class="form-group">
-							<label for="merk">Select Merk</label>
-							<select name="merk" id="merk" class="form-control" disabled>
-								<option value="" disabled selected>Select Merk</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="model">Model</label>
-							<input type="text" class="form-control" id="model" name="model" disabled>
-						</div>
-						<div class="form-group">
-							<label for="stok">Stok</label>
-							<input type="number" class="form-control" id="stok" name="stok" disabled>
+							<label for="keterangan_fasilitas">Keterangan Fasilitas</label>
+							<input type="text" class="form-control" id="keterangan_fasilitas" name="keterangan_fasilitas" placeholder="">
 						</div>
 						<div class="form-group">
 							<label for="tanggal_dari">Tanggal Mulai</label>
@@ -68,6 +68,16 @@
 						<div class="form-group">
 							<label for="tanggal_sampai">Tanggal Sampai</label>
 							<input type="date" class="form-control" id="tanggal_sampai" name="tanggal_sampai" required>
+						</div>
+						<div class="form-group">
+							<label for="status">Status Peminjaman</label>
+                            <select class="form-control" id="status" name="status">
+								<option value="Pending" selected>Pending</option>
+                            </select>
+                        </div>
+						<div class="form-group">
+							<label for="jumlah_dipinjam">Jumlah Dipinjam</label>
+							<input type="text" class="form-control" id="jumlah_dipinjam" name="jumlah_dipinjam" required>
 						</div>
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-primary"><i></i>Save Changes</button>

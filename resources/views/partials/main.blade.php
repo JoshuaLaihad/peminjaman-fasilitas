@@ -110,8 +110,7 @@
 <script src="../assets/js/ready.min.js"></script>
 
 <!-- Azzara DEMO methods, don't include it in your project! -->
-<script src="../assets/js/setting-demo.js"></script>
-<script src="../assets/js/demo.js"></script><script >
+<script >
 	$(document).ready(function() {
 		$('#basic-datatables').DataTable({
 		});
@@ -169,66 +168,57 @@
         console.log("Categories: ", categories);
         console.log("Facilities: ", facilities);
 
+        let keteranganFasilitasInput = document.getElementById('keterangan_fasilitas');
+        let facilitySelect = document.getElementById('facility');
+
         document.getElementById('category').addEventListener('change', function () {
             let categoryId = this.value;
-            let facilitySelect = document.getElementById('facility');
             facilitySelect.innerHTML = '<option value="" disabled selected>Select Facility</option>';
 
-            let filteredFacilities = facilities.filter(facility => facility.categories_id == categoryId)
-                .map(facility => facility.nama_fasilitas)
-                .filter((value, index, self) => self.indexOf(value) === index);
+            // Filter facilities based on category
+            let filteredFacilities = facilities.filter(facility => facility.categories_id == categoryId);
 
-            console.log("Filtered Facilities: ", filteredFacilities);
+            // Use a Set to ensure uniqueness based on facility name
+            let uniqueFacilityNames = new Set();
 
+            // Add unique facility names to the Set
             filteredFacilities.forEach(facility => {
+                uniqueFacilityNames.add(facility.nama_fasilitas);
+            });
+
+            // Convert Set back to array and map to unique facilities
+            let uniqueFacilities = Array.from(uniqueFacilityNames).map(facilityName => {
+                return filteredFacilities.find(facility => facility.nama_fasilitas == facilityName);
+            });
+
+            console.log("Unique Facilities: ", uniqueFacilities);
+
+            uniqueFacilities.forEach(facility => {
                 let option = document.createElement('option');
-                option.value = facility;
-                option.textContent = facility;
+                option.value = facility.id; // Use the facility ID as the option value
+                option.textContent = facility.nama_fasilitas;
                 facilitySelect.appendChild(option);
             });
 
             facilitySelect.disabled = false;
-            document.getElementById('merk').disabled = true;
-            document.getElementById('model').disabled = true;
-            document.getElementById('stok').disabled = true;
         });
 
-        document.getElementById('facility').addEventListener('change', function () {
-            let facilityName = this.value;
-            let merkSelect = document.getElementById('merk');
-            merkSelect.innerHTML = '<option value="" disabled selected>Select Merk</option>';
-
-            let filteredMerks = facilities.filter(facility => facility.nama_fasilitas == facilityName)
-                .map(facility => facility.merk)
-                .filter((value, index, self) => self.indexOf(value) === index); // Tambahkan filter unik disini
-
-            console.log("Filtered Merks: ", filteredMerks);
-
-            filteredMerks.forEach(merk => {
-                let option = document.createElement('option');
-                option.value = merk;
-                option.textContent = merk;
-                merkSelect.appendChild(option);
-            });
-
-            merkSelect.disabled = false;
-        });
-
-        document.getElementById('merk').addEventListener('change', function () {
-            let merkName = this.value;
-            let facilityName = document.getElementById('facility').value;
-            let facility = facilities.find(facility => facility.nama_fasilitas == facilityName && facility.merk == merkName);
-
-            console.log("Selected Facility: ", facility);
-
-            document.getElementById('model').value = facility.model;
-            document.getElementById('stok').value = facility.stok;
-            document.getElementById('model').disabled = false;
-            document.getElementById('stok').disabled = false;
+        facilitySelect.addEventListener('change', function () {
+            let selectedFacilityId = this.value;
+            let selectedFacility = facilities.find(facility => facility.id == selectedFacilityId);
+            
+            // Example: Assuming keterangan_fasilitas is a field in the facilities table
+            if (selectedFacility) {
+                keteranganFasilitasInput.value = selectedFacility.keterangan_fasilitas;
+            } else {
+                keteranganFasilitasInput.value = '';
+            }
         });
     });
 </script>
 @endif
+
+
 
 </body>
 </html>

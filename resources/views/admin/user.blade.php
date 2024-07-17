@@ -49,8 +49,8 @@
 													<input type="number" class="form-control" name="no_handphone" placeholder="No Handphone..." required>
 												</div>
 												<div class="form-group">
-													<label>Asal Instansi</label>
-													<input type="text" class="form-control" name="asal_instansi" placeholder="Asal Instansi..." required>
+													<label>Asal Departemen / Jurusan</label>
+													<input type="text" class="form-control" name="asal_departemen" placeholder="Asal Departemen / Jurusan..." required>
 												</div>
 												<div class="form-group">
 													<label>Password</label>
@@ -109,8 +109,8 @@
 													<input type="number" class="form-control" name="no_handphone" value="{{ $d->no_handphone }}" placeholder="" required>
 												</div>
 												<div class="form-group">
-													<label>Asal Instansi</label>
-													<input type="text" class="form-control" name="asal_instansi" value="{{ $d->asal_instansi }}" placeholder="" required>
+													<label>Asal Departemen / Jurusan</label>
+													<input type="text" class="form-control" name="asal_departemen" value="{{ $d->asal_departemen }}" placeholder="" required>
 												</div>
 												<div class="form-group">
 													<label>Password</label>
@@ -180,7 +180,7 @@
 											<th>Nama</th>
 											<th>Username</th>
 											<th>Nomor Handphone</th>
-											<th>Asal Instansi</th>
+											<th>Asal Departemen / Jurusan</th>
 											<th>Role</th>
 											<th style="width: 10%">Action</th>
 										</tr>
@@ -191,7 +191,7 @@
 											<th>Nama</th>
 											<th>Username</th>
 											<th>Nomor Handphone</th>
-											<th>Asal Instansi</th>
+											<th>Asal Departemen / Jurusan</th>
 											<th>Role</th>
 											<th style="width: 10%">Action</th>
 										</tr>
@@ -204,7 +204,7 @@
 										   <td>{{$row->name}}</td>
 										   <td>{{$row->username}}</td>
 										   <td>{{$row->no_handphone}}</td>
-										   <td>{{$row->asal_instansi}}</td>
+										   <td>{{$row->asal_departemen}}</td>
 										   <td>{{$row->role}}</td>
 										  <td>
 											<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>

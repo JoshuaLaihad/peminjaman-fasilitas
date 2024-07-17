@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\OutFacilityController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,8 +38,8 @@ Route::get('/user/dashboard', [HomeController::class, 'userDashboard'])->name('u
 
 Route::get('/user/peminjaman', [BorrowingController::class, 'Peminjaman'])->name('user.peminjaman');
 Route::post('/user/peminjaman', [BorrowingController::class, 'store'])->name('user.peminjaman.store');
-Route::put('/user/peminjaman/{id}/update', [BorrowingController::class, 'update'])->name('user.peminjaman.update');
-Route::get('/user/peminjaman/{id}/destroy', [BorrowingController::class, 'destroy'])->name('user.peminjaman.destroy');
+
+Route::get('/user/laporan', [ReportController::class, 'userLaporan'])->name('user.laporan');
 
 //Route Admin
 
@@ -67,6 +68,7 @@ Route::get('/admin/fasilitaskeluar/{id}/destroy', [OutFacilityController::class,
 Route::get('/admin/peminjaman', [BorrowingController::class, 'Peminjaman'])->name('admin.peminjaman');
 Route::post('/admin/peminjaman', [BorrowingController::class, 'store'])->name('admin.peminjaman.store');
 
-Route::get('/admin/laporan', [BorrowingController::class, 'Laporan'])->name('admin.laporan');
-Route::put('/admin/laporan/{id}/update', [BorrowingController::class, 'update'])->name('admin.laporan.update');
-Route::get('/admin/peminjaman/{id}/destroy', [BorrowingController::class, 'destroy'])->name('admin.peminjaman.destroy');
+Route::get('/admin/laporan', [ReportController::class, 'adminLaporan'])->name('admin.laporan');
+Route::put('/admin/laporan/{id}/update', [ReportController::class, 'update'])->name('admin.laporan.update');
+Route::get('/admin/laporan/{id}/destroy', [ReportController::class, 'destroy'])->name('admin.laporan.destroy');
+

@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('borrowings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('fasilitas_id');
-            $table->unsignedBigInteger('user_id');
-            $table->date('tanggal_dari');
-            $table->date('tanggal_sampai'); // Mengganti 'tanggal_mulai' dengan 'tanggal_sampai'
-            $table->enum('status', ['diterima', 'ditolak','pending'])->default('pending');
+            $table->unsignedBigInteger('fasilitas_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->date('tanggal_dari')->nullable();
+            $table->date('tanggal_sampai')->nullable(); // Mengganti 'tanggal_mulai' dengan 'tanggal_sampai'
+            $table->integer('jumlah_dipinjam')->nullable();
+            $table->enum('status', ['diterima', 'ditolak','pending'])->default('pending')->nullable();
+            $table->timestamp('replicated_created_at')->nullable();
             $table->timestamps();
         
             // Foreign key constraints

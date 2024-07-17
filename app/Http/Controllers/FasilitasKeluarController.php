@@ -22,9 +22,7 @@ class FasilitasKeluarController extends Controller
         $request->validate([
             'categories_id' => 'required|exists:categories,id', // Validasi categories_id ada di tabel categories
             'nama_fasilitas' => 'required|string|max:255|unique:facilities,nama_fasilitas', // Pastikan unik di tabel facilities
-            'merk' => 'required|string|max:255', // Validasi untuk merk
-            'model' => 'required|string|max:255', // Validasi untuk model
-            'stok' => 'required|integer|min:0', // Validasi untuk stok
+            'keterangan_fasilitas' => 'required|string|max:255', // Validasi untuk keterangan_fasilitask
             'status' => 'required|string|max:255', // Validasi untuk status
             'tanggal' => 'required|date', // Validasi untuk tanggal
         ]);
@@ -33,9 +31,7 @@ class FasilitasKeluarController extends Controller
         $facility = Facility::create([
             'categories_id' => $request->categories_id, // Sesuaikan dengan nama input di form
             'nama_fasilitas' => $request->nama_fasilitas, // Sesuaikan dengan nama input di form
-            'merk' => $request->merk, // Sesuaikan dengan nama input di form
-            'model' => $request->model, // Sesuaikan dengan nama input di form
-            'stok' => $request->stok, // Sesuaikan dengan nama input di form
+            'keterangan_keluar' => $request->keterangan_keluar, // Sesuaikan dengan nama input di form
             'status' => $request->status, // Sesuaikan dengan nama input di form
             'tanggal' => $request->tanggal, // Sesuaikan dengan nama input di form
         ]);
@@ -50,9 +46,7 @@ class FasilitasKeluarController extends Controller
         $validatedData = $request->validate([
             'categories_id' => 'required|exists:categories,id',
             'nama_fasilitas' => 'required|string|max:255|unique:facilities,nama_fasilitas,'.$id,
-            'merk' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'stok' => 'required|integer',
+            'keterangan_keluar' => 'required|string|max:255',
             'status' => 'required|string|max:255',
             'tanggal' => 'required|date',
         ]);

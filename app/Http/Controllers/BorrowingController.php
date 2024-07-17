@@ -34,14 +34,13 @@ class BorrowingController extends Controller
         if (Auth::user()->is_admin) {
             $borrowings = Borrowing::with(['facility', 'user'])->get();
             $facilities = Facility::with('category')->get();
+            return view('admin.laporan', compact('borrowings', 'facilities'));
         } else {
             $borrowings = Borrowing::with(['facility', 'user'])
                 ->where('user_id', Auth::id())
                 ->get();
             $facilities = Facility::with('category')->get(); // Ensure this is defined here too
         }
-        
-        return view('admin.laporan', compact('borrowings', 'facilities'));
     }
 
 
@@ -49,82 +48,51 @@ class BorrowingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'asal_instansi' => 'required|string|max:255',
-            'no_handphone' => 'required|string|max:15',
-            'facility_id' => 'required|exists:facilities,id', // Sesuaikan dengan nama input di form
-            'merk' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'stok' => 'required|integer',
-            'tanggal_dari' => 'required|date', // Sesuaikan dengan nama input di form
-            'tanggal_sampai' => 'required|date|after:tanggal_dari', // Sesuaikan dengan nama input di form
+            'tanggal_dari' => 'required|date',
+            'tanggal_sampai' => 'required|date|after:tanggal_dari',
+            'facility_id' => 'required|exists:facilities,id', // Ensure the facility ID is valid
+            'jumlah_dipinjam' => 'required|integer',
+            // 'status' => 'required|in:pending,ditolak,diterima', // Ensure the status is one of the allowed values    
         ]);
 
-         // Kurangi stok dari aset yang dipilih
-         $facility = Facility::findOrFail($request->facility_id);
+        // Asumsikan bahwa facility_id adalah ID, bukan nama
+        $facility = Facility::findOrFail($request->facility_id);
 
-         // Pastikan stok cukup untuk dipinjam
-         // Pastikan stok cukup untuk dipinjam
-        if ($facility->stok < $request->stok) {
-            return redirect()->back()->with('error', 'Stok tidak mencukupi untuk peminjaman.');
+        if ($facility->jumlah < $request->jumlah) {
+            return redirect()->back()->with('error', 'jumlah tidak mencukupi untuk peminjaman.');
         }
+        
+        // $facility->jumlah -= $request->jumlah;
+        // $facility->save();
 
-        // Kurangi stok pada data fasilitas yang lama
-        $facility->stok -= $request->stok;
-        $facility->save();
+        // $newFacility = $facility->replicate();
+        // $newFacility->jumlah = $request->jumlah;
+        // $newFacility->status = 'Dipinjam';
+        // $newFacility->save();
 
-        // Buat peminjaman baru
         Borrowing::create([
-            'facility_id' => $request->facility_id,
+            'fasilitas_id' => $facility->id,
             'user_id' => Auth::id(),
             'tanggal_dari' => $request->tanggal_dari,
             'tanggal_sampai' => $request->tanggal_sampai,
+            'jumlah_dipinjam' => $request->jumlah_dipinjam,
+            'status' => $request->status,
+            
         ]);
 
-        // Buat duplikasi data fasilitas dengan stok yang dikurangi dan status 'Dipinjam'
-        $newFacility = $facility->replicate();
-        $newFacility->stok = $request->stok;
-        $newFacility->status = 'Dipinjam';
-        $newFacility->save();
-
         if (Auth::user()->is_admin) {
-            // Redirect ke view admin.peminjaman
-            return redirect()->route('admin.peminjaman')->with('success', 'Borrowing status updated successfully.');
+            return redirect()->route('admin.peminjaman')->with('success', 'Peminjaman berhasil.');
         } else {
-            // Redirect ke view user.peminjaman
-            return redirect()->route('user.peminjaman')->with('success', 'Borrowing status updated successfully.');
+            return redirect()->route('user.peminjaman')->with('success', 'Peminjaman berhasil.');
         }
     }
+
+
 
 
     // Update the specified resource in storage.
-    public function update(Request $request, $id)
-    {
-        // Validasi data
-        $request->validate([
-            'status' => 'required|in:pending,ditolak,diterima', // Validasi status
-        ]);
-
-        // Temukan peminjaman berdasarkan ID
-        $borrowing = Borrowing::findOrFail($id);
-
-        // Perbarui data borrowing
-        $borrowing->update([
-            'status' => $request->status,
-        ]);
-
-        // Redirect kembali dengan pesan sukses
-        return redirect()->route('admin.laporan')->with('success', 'Borrowing status updated successfully.');
-}
+    
 
     // Remove the specified resource from storage.
-    public function destroy(Borrowing $borrowing)
-    {
-        if (Auth::user()->is_admin || $borrowing->user_id == Auth::id()) {
-            $borrowing->delete();
-            return redirect()->route('borrowings.index')->with('success', 'Borrowing deleted successfully.');
-        }
 
-        return redirect()->route('borrowings.index')->with('error', 'Unauthorized access.');
-    }
 }

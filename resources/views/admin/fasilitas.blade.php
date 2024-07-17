@@ -53,25 +53,25 @@
 													<input type="text" class="form-control" name="nama_fasilitas" placeholder="Nama Fasilitas..." required>
 												</div>
 												<div class="form-group">
-													<label>Merk</label>
-													<input type="text" class="form-control" name="merk" placeholder="Nama Merk..." required>
-												</div>
-												<div class="form-group">
-													<label>Model</label>
-													<input type="text" class="form-control" name="model" placeholder="Nama Model..." required>
-												</div>
-												<div class="form-group">
-													<label>Stok</label>
-													<input type="number" class="form-control" name="stok" placeholder="Jumlah Stok..." required>
+													<label>Keterangan Fasilitas</label>
+													<input type="text" class="form-control" name="keterangan_fasilitas" placeholder="Keterangan Fasilitas..." required>
 												</div>
 												<div class="form-group">
 													<label>Status</label>
-													<input type="text" class="form-control" name="status" placeholder="Nama Status..." required>
+													<input type="text" class="form-control" name="status" placeholder="Status..." required>
+												</div>
+												<div class="form-group">
+													<label>jumlah</label>
+													<input type="text" class="form-control" name="jumlah" placeholder="jumlah..." required>
 												</div>
 												<div class="form-group">
 													<label>Tanggal</label>
 													<input type="date" class="form-control" name="tanggal" placeholder="Tanggal..." required>
 												</div>
+												<div class="form-group">
+													<label for="nama_file">Upload Image</label>
+													<input type="file" class="form-control" name="nama_file" id="nama_file" required>
+												</div>												
 											</div>
 											<div class="modal-footer">
 												<button type="submit" class="btn btn-primary"><i></i>Save Changes</button>
@@ -118,25 +118,27 @@
 													<input type="text" class="form-control" name="nama_fasilitas" value="{{ $d->nama_fasilitas }}" placeholder="Nama Fasilitas..." required>
 												</div>
 												<div class="form-group">
-													<label>Merk</label>
-													<input type="text" class="form-control" name="merk" value="{{ $d->merk }}" placeholder="Nama Merk..." required>
-												</div>
-												<div class="form-group">
-													<label>Model</label>
-													<input type="text" class="form-control" name="model" value="{{ $d->model }}" placeholder="Nama Model..." required>
-												</div>
-												<div class="form-group">
-													<label>Stok</label>
-													<input type="number" class="form-control" name="stok" value="{{ $d->stok }}" placeholder="Jumlah Stok..." required>
+													<label>Keterangan Fasilitas</label>
+													<input type="text" class="form-control" name="keterangan_fasilitas" value="{{ $d->keterangan_fasilitas }}" placeholder="Keterangan Fasilitas..." required>
 												</div>
 												<div class="form-group">
 													<label>Status</label>
 													<input type="text" class="form-control" name="status" value="{{ $d->status }}" placeholder="Nama Status..." required>
 												</div>
 												<div class="form-group">
+													<label>Jumlah</label>
+													<input type="text" class="form-control" name="jumlah" value="{{ $d->jumlah }}" placeholder="jumlah Fasilitas..." required>
+												</div>
+												<div class="form-group">
 													<label>Tanggal</label>
 													<input type="date" class="form-control" name="tanggal" value="{{ $d->tanggal }}" placeholder="Tanggal..." required>
 												</div>
+												<div class="form-group">
+													<label>Upload Gambar</label>
+													<input type="file" class="form-control" name="nama_file">
+													<br>
+													<img src="{{ asset('public/uploads/' . $d->nama_file) }}" width="100px" alt="current image">
+												</div>	
 											</div>
 											
 											<div class="modal-footer">
@@ -181,7 +183,7 @@
 								</div>
 							</div>
 							@endforeach
-							{{-- End Modal Edit --}}
+							{{-- End Modal Hapus --}}
 
 							<div class="table-responsive">
 								<table id="add-row" class="display table table-striped table-hover" >
@@ -190,11 +192,11 @@
 											<th>Nomor</th>
 											<th>Kategori Fasilitas</th>
 											<th>Nama Fasilitas</th>
-											<th>Merk</th>
-											<th>Model</th>
-											<th>Stok</th>
+											<th>Keterangan Fasilitas</th>
 											<th>Status</th>
+											<th>Jumlah</th>
 											<th>Tanggal</th>
+											<th>Gambar</th>
 											<th style="width: 10%">Action</th>
 										</tr>
 									</thead>
@@ -203,31 +205,35 @@
 											<th>Nomor</th>
 											<th>Kategori Fasilitas</th>
 											<th>Nama Fasilitas</th>
-											<th>Merk</th>
-											<th>Model</th>
-											<th>Stok</th>
+											<th>Keterangan Fasilitas</th>
 											<th>Status</th>
+											<th>Jumlah</th>
 											<th>Tanggal</th>
+											<th>Gambar</th>
 											<th>Action</th>
 										</tr>
 									</tfoot>
 									<tbody>
 										@php $no=1 @endphp
 										@foreach ($facilities as $row)
-										   <tr>
-										   <td>{{$no++}}</td>
-										   <td>{{$row->category->kategori_fasilitas}}</td>
-										   <td>{{$row->nama_fasilitas}}</td>
-										   <td>{{$row->merk}}</td>
-										   <td>{{$row->model}}</td>
-										   <td>{{$row->stok}}</td>
-										   <td>{{$row->status}}</td>
-										   <td>{{$row->tanggal}}</td>
-										  <td>
-											<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
-											<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>
-											</td>
-										</tr>
+										   @if ($row->category)
+											@if ($row->status == 'Tersedia')
+												<tr>
+													<td>{{$no++}}</td>
+													<td>{{$row->category->kategori_fasilitas}}</td>
+													<td>{{$row->nama_fasilitas}}</td>
+													<td>{{$row->keterangan_fasilitas}}</td>
+													<td>{{$row->status}}</td>
+													<td>{{$row->jumlah}}</td>
+													<td>{{$row->tanggal}}</td>
+													<td><img src="{{ asset('public/uploads/' . $row->nama_file) }}" width="100px"></td>
+													<td>
+														<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
+														<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>
+													</td>
+												</tr>  
+											@endif
+										   @endif
 										@endforeach
 									</tbody>
 								</table>
@@ -239,22 +245,4 @@
 		</div>
 	</div>
 </div>
-<script>
-	$(document).ready(function() {
-    $('#category').change(function() {
-        var category_id = $(this).val(); // Ambil nilai ID kategori fasilitas yang dipilih
-        $.ajax({
-            url: '/get-facilities/' + category_id, // URL endpoint untuk mengambil fasilitas berdasarkan kategori
-            type: 'GET',
-            success: function(data) {
-                $('#facility').empty(); // Kosongkan pilihan fasilitas sebelumnya
-                $.each(data, function(key, value) {
-                    $('#facility').append('<option value="' + value.id + '">' + value.nama_fasilitas + '</option>'); // Tambahkan pilihan fasilitas baru sesuai dengan kategori yang dipilih
-                });
-            }
-        });
-    });
-});
-
-</script>
 @endsection

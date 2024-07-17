@@ -71,12 +71,12 @@
 					@enderror
 
 				<div class="form-group form-floating-label">
-					<input id="asal_instansi" name="asal_instansi" type="asal_instansi" class="form-control input-border-bottom" required>
-					<label for="asal_instansi" class="placeholder" value="{{ old('asal_instansi') }}">Asal Instansi</label>
-					<div class="show-asal_instansi">
+					<input id="asal_departemen" name="asal_departemen" type="asal_departemen" class="form-control input-border-bottom" required>
+					<label for="asal_departemen" class="placeholder" value="{{ old('asal_departemen') }}">Asal Departemen / Jurusan</label>
+					<div class="show-asal_departemen">
 					</div>
 					</div>
-						@error('asal_instansi')
+						@error('asal_departemen')
 								<small>{{ $message }}</small>
 						@enderror
 				

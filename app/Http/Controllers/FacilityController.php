@@ -15,25 +15,33 @@ class FacilityController extends Controller
     }
 
     public function store(Request $request)
-{
+    {
     $request->validate([
         'categories_id' => 'required|exists:categories,id',
         'nama_fasilitas' => 'required|string|max:255',
-        'merk' => 'required|string|max:255',
-        'model' => 'required|string|max:255',
-        'stok' => 'required|integer|min:0',
+        'keterangan_fasilitas' => 'required|string|max:255',
         'status' => 'required|string|max:255',
+        'jumlah' => 'required|integer',
         'tanggal' => 'required|date',
+        'nama_file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
     ]);
     
+    
+    if ($request->hasFile('nama_file')) {
+        $file = $request->file('nama_file');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        // $path = $file->storeAs('uploads', $filename);
+        $file->move(public_path('public/uploads'), $filename);
+    }
+
         Facility::create([
             'categories_id' => $request->categories_id,
             'nama_fasilitas' => $request->nama_fasilitas,
-            'merk' => $request->merk,
-            'model' => $request->model,
-            'stok' => $request->stok,
+            'keterangan_fasilitas' => $request->keterangan_fasilitas,
             'status' => $request->status,
+            'jumlah' => $request->jumlah,
             'tanggal' => $request->tanggal,
+            'nama_file' => $filename,
         ]);
 
         return redirect()->route('admin.fasilitas')->with('success', 'Data berhasil ditambahkan');
@@ -45,28 +53,43 @@ class FacilityController extends Controller
         $validatedData = $request->validate([
             'categories_id' => 'required|exists:categories,id',
             'nama_fasilitas' => 'required|string|max:255',
-            'merk' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'stok' => 'required|integer',
+            'keterangan_fasilitas' => 'required|string|max:255',
             'status' => 'required|string|max:255',
+            'jumlah' => 'required|integer',
             'tanggal' => 'required|date',
+            'nama_file' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $facility = Facility::findOrFail($id);
 
+        if ($request->hasFile('nama_file')) {
+            // Delete old file if exists
+            if ($facility->nama_file && file_exists(public_path('public/uploads/' . $facility->nama_file))) {
+                unlink(public_path('public/uploads/' . $facility->nama_file));
+            }
+    
+            $file = $request->file('nama_file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('public/uploads'), $filename);
+    
+            $validatedData['nama_file'] = $filename;
+        } else {
+            $validatedData['nama_file'] = $facility->nama_file; // Retain the old file if no new file is uploaded
+        }
+
         $isStatusChanged = $validatedData['status'] != $facility->status;
-        $isStokChanged = $validatedData['stok'] != $facility->stok;
+        $isjumlahChanged = $validatedData['jumlah'] != $facility->jumlah;
         $isTanggalChanged = $validatedData['tanggal'] != $facility->tanggal;
 
-        if ($isStatusChanged && $isStokChanged && $isTanggalChanged) {
+        if ($isStatusChanged && $isjumlahChanged && $isTanggalChanged) {
             $newDataFacility = $facility->replicate();
             $newDataFacility->status = $validatedData['status'];
             $newDataFacility->tanggal = $validatedData['tanggal'];
-            $newDataFacility->stok = $validatedData['stok'];
+            $newDataFacility->jumlah = $validatedData['jumlah'];
 
             $newDataFacility->save();
 
-            $facility->stok -= $validatedData['stok'];
+            $facility->jumlah -= $validatedData['jumlah'];
             $facility->save();
         } else {
             $facility->update($validatedData);

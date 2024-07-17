@@ -31,7 +31,7 @@ class User extends Authenticatable
         'password',
         'role',
         'no_handphone',
-        'asal_instansi',
+        'asal_departemen',
     ];
 
     /**
