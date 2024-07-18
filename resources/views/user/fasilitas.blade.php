@@ -4,9 +4,10 @@
 	<div class="content">
 		<div class="page-inner">
 			<div class="page-header">
-				<h4 class="page-title">Laporan Peminjaman User</h4>
+				<h4 class="page-title">Data Fasilitas User</h4>
 			</div>
 			<div class="row">
+
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-body">
@@ -14,43 +15,45 @@
 								<table id="add-row" class="display table table-striped table-hover" >
 									<thead>
 										<tr>
-											<th>No</th>
-											<th>Nama</th>
+											<th>Nomor</th>
 											<th>Kategori Fasilitas</th>
 											<th>Nama Fasilitas</th>
-											<th>Tanggal Mulai</th>
-											<th>Tanggal Sampai</th>
-											<th>Jumlah Dipinjam</th>
+											<th>Keterangan Fasilitas</th>
 											<th>Status</th>
+											<th>Jumlah</th>
+											<th>Tanggal</th>
+											<th>Gambar</th>
 										</tr>
 									</thead>
 									<tfoot>
 										<tr>
-											<th>No</th>
-											<th>Nama</th>
+											<th>Nomor</th>
 											<th>Kategori Fasilitas</th>
 											<th>Nama Fasilitas</th>
-											<th>Tanggal Mulai</th>
-											<th>Tanggal Sampai</th>
-											<th>Jumlah Dipinjam</th>
+											<th>Keterangan Fasilitas</th>
 											<th>Status</th>
+											<th>Jumlah</th>
+											<th>Tanggal</th>
+											<th>Gambar</th>
 										</tr>
 									</tfoot>
 									<tbody>
 										@php $no=1 @endphp
-										@foreach ($borrowings as $row)
-											@if ($row->facility && $row->facility->category && $row->user)
+										@foreach ($facilities as $row)
+										   @if ($row->category)
+											@if ($row->status == 'Tersedia')
 												<tr>
 													<td>{{$no++}}</td>
-													<td>{{$row->user->name}}</td>
-													<td>{{$row->facility->category->kategori_fasilitas}}</td>
-													<td>{{$row->facility->nama_fasilitas}}</td>
-													<td>{{$row->tanggal_dari}}</td>
-													<td>{{$row->tanggal_sampai}}</td>
-													<td>{{$row->jumlah_dipinjam}}</td>
+													<td>{{$row->category->kategori_fasilitas}}</td>
+													<td>{{$row->nama_fasilitas}}</td>
+													<td>{{$row->keterangan_fasilitas}}</td>
 													<td>{{$row->status}}</td>
-												</tr>
+													<td>{{$row->jumlah}}</td>
+													<td>{{$row->tanggal}}</td>
+													<td><img src="{{ asset('uploads/' . $row->nama_file) }}" width="100px"></td>
+												</tr>  
 											@endif
+										   @endif
 										@endforeach
 									</tbody>
 								</table>
@@ -61,6 +64,5 @@
 			</div>
 		</div>
 	</div>
-	
 </div>
 @endsection

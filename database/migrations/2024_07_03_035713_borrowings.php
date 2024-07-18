@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('tanggal_dari')->nullable();
             $table->date('tanggal_sampai')->nullable(); // Mengganti 'tanggal_mulai' dengan 'tanggal_sampai'
             $table->integer('jumlah_dipinjam')->nullable();
-            $table->enum('status', ['diterima', 'ditolak','pending'])->default('pending')->nullable();
+            $table->enum('status', ['selesai', 'diterima', 'ditolak','pending'])->default('pending')->nullable();
             $table->timestamp('replicated_created_at')->nullable();
             $table->timestamps();
         

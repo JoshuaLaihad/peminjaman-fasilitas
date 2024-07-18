@@ -4,11 +4,21 @@
 	<div class="content">
 		<div class="page-inner">
 			<div class="page-header">
-				<h4 class="page-title">Daftar Peminjaman Aset</h4>
+				<h4 class="page-title">Daftar Peminjaman Fasilitas Admin</h4>
 			</div>
 			<div class="card">
 				<div class="card-header">
-					<div class="card-title">Form Peminjaman Aset</div>
+					<div class="card-title">Form Peminjaman Fasiltias Admin</div>
+					@if(session('success'))
+						<div class="alert alert-success">
+							{{ session('success') }}
+						</div>
+					@endif
+					@if(session('error'))
+						<div class="alert alert-danger">
+							{{ session('error') }}
+						</div>
+					@endif
 				</div>
 				<div class="card-body">
 					<!-- Form Peminjaman -->
@@ -21,40 +31,53 @@
 							<input type="text" class="form-control" id="name" name="name" value="{{ Auth::user()->name }}" readonly>
 						</div> 
 						<div class="form-group">
-							<label for="no_handphone" class="form-label"></label>
+							<label for="no_handphone" class="form-label">Nomor Handphone</label>
 							<input type="text" class="form-control" id="no_handphone" name="no_handphone" value="{{ Auth::user()->no_handphone }}" readonly>
 						</div> 
 						<div class="form-group">
-							<label for="asal_instansi" class="form-label"></label>
-							<input type="text" class="form-control" id="asal_instansi" name="asal_instansi" value="{{ Auth::user()->asal_instansi }}" readonly>
+							<label for="asal_departemen" class="form-label">Asal Departemen / Jurusan</label>
+							<input type="text" class="form-control" id="asal_departemen" name="asal_departemen" value="{{ Auth::user()->asal_departemen }}" readonly>
 						</div> 
 						<hr> <!-- Garis Pembatas -->
 					
 						<!-- Informasi Aset -->
 						<h2>Informasi Aset</h2>
 						<div class="form-group">
-							<label for="category">Select Category</label>
+							<label for="category">Kategori Fasilitas</label>
 							<select name="category_id" id="category" class="form-control">
-								@foreach($facilities as $facility)
-									@if($facility->category)
-										<option value="{{ $facility->category->id }}">{{ $facility->category->kategori_fasilitas }}</option>
-									@endif
+								<option value="" disabled selected>Pilih Kategori Fasilitas</option>
+								@foreach($categories as $category)
+									<option value="{{ $category->id }}">{{ $category->kategori_fasilitas }}</option>
 								@endforeach
 							</select>
 						</div>
 						<div class="form-group">
-							<label for="facility">Select Facility</label>
-							<select name="facility_id" id="facility" class="form-control">
+							<label for="facility">Fasilitas</label>
+							<select name="facility_id" id="facility" class="form-control" disabled>
 								<option value="" disabled selected>Pilih Fasilitas</option>
 							</select>
 						</div>
 						<div class="form-group">
-							<label for="tanggal_dari" class="form-label">Tanggal Dari</label>
+							<label for="keterangan_fasilitas">Keterangan Fasilitas</label>
+							<input type="text" class="form-control" id="keterangan_fasilitas" name="keterangan_fasilitas" placeholder="">
+						</div>
+						<div class="form-group">
+							<label for="tanggal_dari">Tanggal Mulai</label>
 							<input type="date" class="form-control" id="tanggal_dari" name="tanggal_dari" required>
 						</div>
 						<div class="form-group">
-							<label for="tanggal_sampai" class="form-label">Tanggal Sampai</label>
+							<label for="tanggal_sampai">Tanggal Sampai</label>
 							<input type="date" class="form-control" id="tanggal_sampai" name="tanggal_sampai" required>
+						</div>
+						<div class="form-group">
+							<label for="status">Status Peminjaman</label>
+                            <select class="form-control" id="status" name="status">
+								<option value="Pending" selected>Pending</option>
+                            </select>
+                        </div>
+						<div class="form-group">
+							<label for="jumlah_dipinjam">Jumlah Dipinjam</label>
+							<input type="text" class="form-control" id="jumlah_dipinjam" name="jumlah_dipinjam" required>
 						</div>
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-primary"><i></i>Save Changes</button>
@@ -65,30 +88,4 @@
 		</div>
 	</div>
 </div>
-<script>
-	var categorySelect = document.getElementById('category');
-	var facilitySelect = document.getElementById('facility');
-	var facilities = @json($facilities);
-
-	function updateFacilities() {
-		var selectedCategoryId = categorySelect.value;
-		facilitySelect.innerHTML = '<option value="" disabled selected>Pilih Fasilitas</option>';
-
-		facilities.forEach(function(facility) {
-			if (facility.category && facility.category.id == selectedCategoryId) {
-				var facilityOption = document.createElement('option');
-				facilityOption.value = facility.id;
-				facilityOption.textContent = facility.nama_fasilitas;
-				facilitySelect.appendChild(facilityOption);
-			}
-		});
-		facilitySelect.disabled = false;
-	}
-
-	categorySelect.addEventListener('change', updateFacilities);
-
-	document.addEventListener('DOMContentLoaded', function() {
-		updateFacilities();
-	});
-</script>
 @endsection

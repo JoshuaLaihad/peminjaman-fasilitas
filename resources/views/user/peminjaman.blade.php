@@ -4,11 +4,11 @@
 	<div class="content">
 		<div class="page-inner">
 			<div class="page-header">
-				<h4 class="page-title">Daftar Peminjaman Aset Admin</h4>
+				<h4 class="page-title">Daftar Peminjaman Fasilitas User</h4>
 			</div>
 			<div class="card">
 				<div class="card-header">
-					<div class="card-title">Form Peminjaman Aset</div>
+					<div class="card-title">Form Peminjaman Fasilitas User</div>
 					@if(session('success'))
 						<div class="alert alert-success">
 							{{ session('success') }}
@@ -22,7 +22,7 @@
 				</div>
 				<div class="card-body">
 					<!-- Form Peminjaman -->
-					<form action="{{ route('admin.peminjaman.store') }}" method="POST">
+					<form action="{{ route('userf.peminjaman.store') }}" method="POST">
 						@csrf
 						<!-- Informasi Peminjam -->
 						<h2>Informasi Peminjam</h2>
@@ -31,11 +31,11 @@
 							<input type="text" class="form-control" id="name" name="name" value="{{ Auth::user()->name }}" readonly>
 						</div> 
 						<div class="form-group">
-							<label for="no_handphone" class="form-label"></label>
+							<label for="no_handphone" class="form-label">Nomor Handphone</label>
 							<input type="text" class="form-control" id="no_handphone" name="no_handphone" value="{{ Auth::user()->no_handphone }}" readonly>
 						</div> 
 						<div class="form-group">
-							<label for="asal_departemen" class="form-label"></label>
+							<label for="asal_departemen" class="form-label">Asal Departemen / Jurusan</label>
 							<input type="text" class="form-control" id="asal_departemen" name="asal_departemen" value="{{ Auth::user()->asal_departemen }}" readonly>
 						</div> 
 						<hr> <!-- Garis Pembatas -->
@@ -43,18 +43,18 @@
 						<!-- Informasi Aset -->
 						<h2>Informasi Aset</h2>
 						<div class="form-group">
-							<label for="category">Select Category</label>
+							<label for="category">Kategori Fasilitas</label>
 							<select name="category_id" id="category" class="form-control">
-								<option value="" disabled selected>Select Category</option>
+								<option value="" disabled selected>Pilih Kategori Fasilitas</option>
 								@foreach($categories as $category)
 									<option value="{{ $category->id }}">{{ $category->kategori_fasilitas }}</option>
 								@endforeach
 							</select>
 						</div>
 						<div class="form-group">
-							<label for="facility">Select Facility</label>
+							<label for="facility">Fasilitas</label>
 							<select name="facility_id" id="facility" class="form-control" disabled>
-								<option value="" disabled selected>Select Facility</option>
+								<option value="" disabled selected>Pilih Fasilitas</option>
 							</select>
 						</div>
 						<div class="form-group">

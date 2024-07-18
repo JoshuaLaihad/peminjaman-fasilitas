@@ -1,19 +1,20 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
-    /**
-     * Display the login form.
-     *
-     * @return \Illuminate\View\View
-     */
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['showLoginForm', 'login', 'showRegistrationForm', 'register']);
+        $this->middleware('checkrole:admin')->only(['User', 'store', 'update', 'destroy']);
+    }
+
     public function showLoginForm()
     {
         return view('auth.login');
@@ -21,19 +22,10 @@ class AuthController extends Controller
 
     public function User()
     {
-        // Retrieve all categories
         $users = User::all();
-        
-        // Return the categories to a view (e.g., categories.index)
         return view('admin.user', compact('users'));
     }
 
-    /**
-     * Handle an authentication attempt.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function login(Request $request)
     {
         $credentials = $request->only('username', 'password');
@@ -42,7 +34,7 @@ class AuthController extends Controller
             $user = Auth::user();
             if ($user->role == 'admin'){
                 return redirect()->route('admin.dashboard')->with('success', 'Login Berhasil!');
-            }elseif($user->role == 'user'){
+            } elseif ($user->role == 'user'){
                 return redirect()->route('user.dashboard')->with('success', 'Login Berhasil!');
             }
         }
@@ -50,37 +42,25 @@ class AuthController extends Controller
         return redirect()->route('login')->with('failed', 'Username atau Password Salah!');
     }
 
-    /**
-     * Log the user out of the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        $cookies = $request->cookies->all();
+        foreach ($cookies as $key => $value){
+            Cookie::queue(Cookie::forget($key));
+        }
+
         return redirect()->route('login')->with('success', 'Anda Berhasil Logout!');
     }
 
-    /**
-     * Display the registration form.
-     *
-     * @return \Illuminate\View\View
-     */
     public function showRegistrationForm()
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle a registration attempt.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function register(Request $request)
     {
         $request->validate([
@@ -105,11 +85,12 @@ class AuthController extends Controller
         ];
 
         if(Auth::attempt($login)){
-            return redirect()->route('login')->with('success', 'Pendaftaran Berhasil, SIlahkan Login!');
-        }else{
+            return redirect()->route('login')->with('success', 'Pendaftaran Berhasil, Silahkan Login!');
+        } else {
             return redirect()->route('login')->with('failed', 'Pendaftaran Gagal');
         }
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -121,17 +102,18 @@ class AuthController extends Controller
             'role' => 'required',
         ]);
 
-        $user = User::create([
+        User::create([
             'name' => $request->name,
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'no_handphone' => $request->no_handphone,
             'asal_departemen' => $request->asal_departemen,
-            'role' => $request->role, 
+            'role' => $request->role,
         ]);
 
-    return redirect()->route('admin.user')->with('success', 'Data berhasil ditambahkan');
+        return redirect()->route('admin.user')->with('success', 'Data berhasil ditambahkan');
     }
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -143,30 +125,30 @@ class AuthController extends Controller
             'role' => 'required',
         ]);
 
-    $user = User::findOrFail($id);
+        $user = User::findOrFail($id);
 
-    $userData = [
-        'name' => $request->name,
-        'username' => $request->username,
-        'no_handphone' => $request->no_handphone,
-        'asal_departemen' => $request->asal_departemen,
-        'role' => $request->role,
-    ];
+        $userData = [
+            'name' => $request->name,
+            'username' => $request->username,
+            'no_handphone' => $request->no_handphone,
+            'asal_departemen' => $request->asal_departemen,
+            'role' => $request->role,
+        ];
 
-    if($request->filled('password')){
-        $user['password'] = Hash::make($request->password);
+        if($request->filled('password')){
+            $userData['password'] = Hash::make($request->password);
+        }
+
+        $user->update($userData);
+
+        return redirect()->route('admin.user')->with('success', 'Data berhasil diperbarui');
     }
 
-    $user->update($userData);
-
-    return redirect()->route('admin.user')->with('success', 'Data berhasil diperbarui');
-    }
     public function destroy($id)
     {
         $user = User::find($id);
-
         $user->delete();
-            
+
         return redirect()->route('admin.user')->with('success', 'Data berhasil dihapus');
     }
 }

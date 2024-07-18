@@ -4,7 +4,7 @@
 	<div class="content">
 		<div class="page-inner">
 			<div class="page-header">
-				<h4 class="page-title">Data Fasilitas</h4>
+				<h4 class="page-title">Data Fasilitas Admin</h4>
 			</div>
 			<div class="row">
 
@@ -13,6 +13,16 @@
 						<div class="card-header">
 							<div class="d-flex align-items-center">
 								<h4 class="card-title">Data Fasilitas</h4>
+								@if(session('success'))
+									<div class="alert alert-success">
+										{{ session('success') }}
+									</div>
+								@endif
+								@if(session('error'))
+									<div class="alert alert-danger">
+										{{ session('error') }}
+									</div>
+								@endif
 								<button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#modalCreate">
 									<i class="fa fa-plus"></i>
 									Tambah Data
@@ -38,7 +48,7 @@
 											<div class="modal-body">
 												<div class="form-group">
 													@if ($categories->count() > 0)
-														<label for="category">Select Category</label>
+														<label for="category">Kategori Fasilitas</label>
 														<select name="categories_id" id="category" class="form-control">
 															@foreach($categories as $category)
 																<option value="{{ $category->id }}">{{ $category->kategori_fasilitas }}</option>
@@ -103,7 +113,7 @@
 											<div class="modal-body">
 												<div class="form-group">
 													@if ($categories->count() > 0)
-														<label for="category">Select Category</label>
+														<label for="category">Kategori Fasilitas</label>
 														<select name="categories_id" id="category" class="form-control">
 															@foreach($categories as $category)
 																<option value="{{ $category->id }}">{{ $category->kategori_fasilitas }}</option>
@@ -226,7 +236,7 @@
 													<td>{{$row->status}}</td>
 													<td>{{$row->jumlah}}</td>
 													<td>{{$row->tanggal}}</td>
-													<td><img src="{{ asset('public/uploads/' . $row->nama_file) }}" width="100px"></td>
+													<td><img src="{{ asset('uploads/' . $row->nama_file) }}" width="100px"></td>
 													<td>
 														<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
 														<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>

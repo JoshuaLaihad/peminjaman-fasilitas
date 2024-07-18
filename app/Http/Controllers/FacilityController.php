@@ -4,35 +4,48 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Facility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FacilityController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('checkrole:admin')->except(['FasilitasUser']);
+        $this->middleware('checkrole:user')->only(['FasilitasUser']);
+    }
+
     public function Fasilitas()
     {
         $facilities = Facility::with('category')->get();
-        $categories = Category::all(); // Ambil semua kategori
+        $categories = Category::all();
         return view('admin.fasilitas', compact('facilities', 'categories'));
+    }
+
+    public function FasilitasUser()
+    {
+        $facilities = Facility::with('category')->get();
+        $categories = Category::all();
+        return view('user.fasilitas', compact('facilities', 'categories'));
     }
 
     public function store(Request $request)
     {
-    $request->validate([
-        'categories_id' => 'required|exists:categories,id',
-        'nama_fasilitas' => 'required|string|max:255',
-        'keterangan_fasilitas' => 'required|string|max:255',
-        'status' => 'required|string|max:255',
-        'jumlah' => 'required|integer',
-        'tanggal' => 'required|date',
-        'nama_file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-    ]);
-    
-    
-    if ($request->hasFile('nama_file')) {
-        $file = $request->file('nama_file');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        // $path = $file->storeAs('uploads', $filename);
-        $file->move(public_path('public/uploads'), $filename);
-    }
+        $request->validate([
+            'categories_id' => 'required|exists:categories,id',
+            'nama_fasilitas' => 'required|string|max:255',
+            'keterangan_fasilitas' => 'required|string|max:255',
+            'status' => 'required|string|max:255',
+            'jumlah' => 'required|integer',
+            'tanggal' => 'required|date',
+            'nama_file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('nama_file')) {
+            $file = $request->file('nama_file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads'), $filename);
+        }
 
         Facility::create([
             'categories_id' => $request->categories_id,
@@ -46,7 +59,6 @@ class FacilityController extends Controller
 
         return redirect()->route('admin.fasilitas')->with('success', 'Data berhasil ditambahkan');
     }
-
 
     public function update(Request $request, $id)
     {
@@ -63,25 +75,24 @@ class FacilityController extends Controller
         $facility = Facility::findOrFail($id);
 
         if ($request->hasFile('nama_file')) {
-            // Delete old file if exists
-            if ($facility->nama_file && file_exists(public_path('public/uploads/' . $facility->nama_file))) {
-                unlink(public_path('public/uploads/' . $facility->nama_file));
+            if ($facility->nama_file && file_exists(public_path('uploads/' . $facility->nama_file))) {
+                unlink(public_path('uploads/' . $facility->nama_file));
             }
-    
+
             $file = $request->file('nama_file');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('public/uploads'), $filename);
-    
+            $file->move(public_path('uploads'), $filename);
+
             $validatedData['nama_file'] = $filename;
         } else {
-            $validatedData['nama_file'] = $facility->nama_file; // Retain the old file if no new file is uploaded
+            $validatedData['nama_file'] = $facility->nama_file;
         }
 
         $isStatusChanged = $validatedData['status'] != $facility->status;
-        $isjumlahChanged = $validatedData['jumlah'] != $facility->jumlah;
+        $isJumlahChanged = $validatedData['jumlah'] != $facility->jumlah;
         $isTanggalChanged = $validatedData['tanggal'] != $facility->tanggal;
 
-        if ($isStatusChanged && $isjumlahChanged && $isTanggalChanged) {
+        if ($isStatusChanged && $isJumlahChanged && $isTanggalChanged) {
             $newDataFacility = $facility->replicate();
             $newDataFacility->status = $validatedData['status'];
             $newDataFacility->tanggal = $validatedData['tanggal'];

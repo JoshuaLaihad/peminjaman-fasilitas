@@ -12,7 +12,17 @@
 					<div class="card">
 						<div class="card-header">
 							<div class="d-flex align-items-center">
-								<h4 class="card-title">Data User</h4>
+								<h4 class="card-title">Data User Admin</h4>
+								@if(session('success'))
+									<div class="alert alert-success">
+										{{ session('success') }}
+									</div>
+								@endif
+								@if(session('error'))
+									<div class="alert alert-danger">
+										{{ session('error') }}
+									</div>
+								@endif
 								<button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#modalCreate">
 									<i class="fa fa-plus"></i>
 									Tambah Data

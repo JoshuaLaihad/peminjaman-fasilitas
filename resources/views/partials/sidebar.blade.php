@@ -1,37 +1,23 @@
 <div class="sidebar">
-
     <div class="sidebar-background"></div>
     <div class="sidebar-wrapper scrollbar-inner">
         <div class="sidebar-content">
             <div class="user">
-                <div class="avatar-sm float-left mr-2">
-                    <img src="/assets/img/profile.jpg" alt="." class="avatar-img rounded-circle">
-                </div>
                 <div class="info">
                     @if (Auth::check())
                         <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                            <i class="fas fa-layer-group"></i>
                             <span>
                                 {{ Auth::user()->name }}
                                 <span class="user-level">{{ Auth::user()->role }}</span>
                             </span>
                         </a>
                     @endif
-
                     <div class="collapse in" id="collapseExample">
                         <ul class="nav">
                             <li>
-                                <a href="#profile">
-                                    <span class="link-collapse">My Profile</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#edit">
-                                    <span class="link-collapse">Edit Profile</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#settings">
-                                    <span class="link-collapse">Settings</span>
+                                <a class="dropdown-item" href="{{ route('logout') }}">
+                                    Logout
                                 </a>
                             </li>
                         </ul>
@@ -42,7 +28,7 @@
                 <li class="nav-item {{ request()->routeIs('admin.dashboard') || request()->routeIs('user.dashboard') ? 'active' : '' }}">
                     <i class="fas fa-home"></i>
                     @if(auth()->check())
-                        @if(auth()->user()->isAdmin())
+                        @if(auth()->user()->role == 'admin')
                             <a href="{{ route('admin.dashboard') }}">
                                 <i class="fas fa-home"></i>Dashboard
                             </a>
@@ -59,42 +45,49 @@
                     </span>
                     <h4 class="text-section">Components</h4>
                 </li>
-                @if (auth()->user()->role !== 'user')
-                <li class="nav-item {{ request()->routeIs('admin.user') ? 'active' : '' }}">
-                    <a href="{{ route('admin.user') }}">
-                        <i class="fas fa-layer-group"></i>
-                        <p>Data User</p>
-                    </a>
-                </li>
-                <li class="nav-item {{ request()->routeIs('admin.kategori') ? 'active' : '' }}">
-                    <a href="{{ route('admin.kategori') }}">
-                        <i class="fas fa-pen-square"></i>
-                        <p>Data Kategori</p>
-                    </a>
-                </li>
-                <li class="nav-item {{ request()->routeIs('admin.fasilitas') || request()->routeIs('admin.fasilitaskeluar') ? 'active' : '' }}">
-                    <a data-toggle="collapse" href="#tables">
-                        <i class="fas fa-pen-square"></i>
-                        <p>Data Fasilitas</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="tables">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('admin.fasilitas') }}">
-                                    <span class="sub-item">Data Fasilitas</span>
-                                </a>
-                                <a href="{{ route('admin.fasilitaskeluar') }}">
-                                    <span class="sub-item">Data Fasilitas Keluar</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                @if (auth()->check() && auth()->user()->role == 'admin')
+                    <li class="nav-item {{ request()->routeIs('admin.user') ? 'active' : '' }}">
+                        <a href="{{ route('admin.user') }}">
+                            <i class="fas fa-layer-group"></i>
+                            <p>Data User</p>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ request()->routeIs('admin.kategori') ? 'active' : '' }}">
+                        <a href="{{ route('admin.kategori') }}">
+                            <i class="fas fa-pen-square"></i>
+                            <p>Data Kategori</p>
+                        </a>
+                    </li>
                 @endif
+                <li class="nav-item {{ request()->routeIs('admin.fasilitas') || request()->routeIs('user.fasilitas') ? 'active' : '' }}">
+                    @if(auth()->check())
+                        @if(auth()->user()->role == 'admin')
+                            <a href="{{ route('admin.fasilitas') }}">
+                                <i class="far fa-check-circle"></i> Data Fasilitas
+                            </a>
+                        @else
+                            <a href="{{ route('user.fasilitas') }}">
+                                <i class="far fa-check-circle"></i> Data Fasilitas
+                            </a>
+                        @endif
+                    @endif
+                </li>
+                <li class="nav-item {{ request()->routeIs('admin.fasilitaskeluar') || request()->routeIs('user.fasilitaskeluar') ? 'active' : '' }}">
+                    @if(auth()->check())
+                        @if(auth()->user()->role == 'admin')
+                            <a href="{{ route('admin.fasilitaskeluar') }}">
+                                <i class="far fa-newspaper"></i> Data Fasilitas Keluar
+                            </a>
+                        @else
+                            <a href="{{ route('user.fasilitaskeluar') }}">
+                                <i class="far fa-newspaper"></i> Data Fasilitas Keluar
+                            </a>
+                        @endif
+                    @endif
+                </li>
                 <li class="nav-item {{ request()->routeIs('admin.peminjaman') || request()->routeIs('user.peminjaman') ? 'active' : '' }}">
                     @if(auth()->check())
-                        @if(auth()->user()->isAdmin())
+                        @if(auth()->user()->role == 'admin')
                             <a href="{{ route('admin.peminjaman') }}">
                                 <i class="fas fa-pen-square"></i> Peminjaman
                             </a>
@@ -105,14 +98,21 @@
                         @endif
                     @endif
                 </li>
-                @if (auth()->user()->role !== 'user')
-                <li class="nav-item {{ request()->routeIs('admin.laporan') ? 'active' : '' }}">
-                    <a href="{{ route('admin.laporan') }}">
-                        <i class="far fa-chart-bar"></i>
-                        <p>Data Laporan</p>
-                    </a>
+                <li class="nav-item {{ request()->routeIs('admin.laporan') || request()->routeIs('user.laporan') ? 'active' : '' }}">
+                    @if(auth()->check())
+                        @if(auth()->user()->role == 'admin')
+                            <a href="{{ route('admin.laporan') }}">
+                                <i class="far fa-chart-bar"></i>
+                                <p>Data Laporan</p>
+                            </a>
+                        @else
+                            <a href="{{ route('user.laporan') }}">
+                                <i class="far fa-chart-bar"></i>
+                                <p>Data Laporan</p>
+                            </a>
+                        @endif
+                    @endif
                 </li>
-                @endif
             </ul>
         </div>
     </div>

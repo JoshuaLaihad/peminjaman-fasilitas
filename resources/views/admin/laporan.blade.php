@@ -4,7 +4,7 @@
 	<div class="content">
 		<div class="page-inner">
 			<div class="page-header">
-				<h4 class="page-title">Laporan Peminjaman</h4>
+				<h4 class="page-title">Laporan Peminjaman Admin</h4>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
@@ -34,21 +34,21 @@
 															<input type="text" class="form-control" id="name" name="name" value="{{ Auth::user()->name }}" readonly>
 														</div> 
 														<div class="form-group">
-															<label for="no_handphone" class="form-label"></label>
+															<label for="no_handphone" class="form-label">Nomor Handphone</label>
 															<input type="text" class="form-control" id="no_handphone" name="no_handphone" value="{{ Auth::user()->no_handphone }}" readonly>
 														</div> 
 														<div class="form-group">
-															<label for="asal_departemen" class="form-label"></label>
+															<label for="asal_departemen" class="form-label">Asal Departemen / Jurusan</label>
 															<input type="text" class="form-control" id="asal_departemen" name="asal_departemen" value="{{ Auth::user()->asal_departemen }}" readonly>
 														</div> 
 														
 														<h2>Informasi Aset</h2>
 															<div class="form-group">
-																<label for="category">Select Category</label>
+																<label for="category">Kategori Fasilitas</label>
 																<input type="text" class="form-control" id="category" name="category_id" value="{{ $d->facility->category->kategori_fasilitas }}" readonly>
 															</div>
 															<div class="form-group">
-																<label for="facility">Select Facility</label>
+																<label for="facility">Fasilitas</label>
 																<input type="text" class="form-control" id="facility" name="facility_id" value="{{ $d->facility->nama_fasilitas }}" readonly>
 															</div>
 															<div class="form-group">
@@ -76,6 +76,10 @@
 															<div class="form-check form-check-inline">
 																<input class="form-check-input" type="radio" name="status" id="statusDiterima{{ $d->id }}" value="diterima" {{ $d->status == 'diterima' ? 'checked' : '' }} required>
 																<label class="form-check-label" for="statusDiterima{{ $d->id }}">Diterima</label>
+															</div>
+															<div class="form-check form-check-inline">
+																<input class="form-check-input" type="radio" name="status" id="statusSelesai{{ $d->id }}" value="selesai" {{ $d->status == 'selesai' ? 'checked' : '' }} required>
+																<label class="form-check-label" for="statusSelesai $d->id }}">Selesai</label>
 															</div>
 														</div>
 													</div>
@@ -153,10 +157,10 @@
 									<tbody>
 										@php $no=1 @endphp
 										@foreach ($borrowings as $row)
-											@if ($row->facility && $row->facility->category)
+											@if ($row->facility && $row->facility->category && $row->user)
 												<tr>
 													<td>{{$no++}}</td>
-													<td>{{ Auth::user()->name }}</td>
+													<td>{{$row->user->name}}</td>
 													<td>{{$row->facility->category->kategori_fasilitas}}</td>
 													<td>{{$row->facility->nama_fasilitas}}</td>
 													<td>{{$row->tanggal_dari}}</td>

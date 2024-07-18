@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 namespace App\Http\Controllers;
 
 use App\Models\Category;
@@ -8,33 +7,44 @@ use Illuminate\Http\Request;
 
 class OutFacilityController extends Controller
 {
-    
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('checkrole:admin')->except(['FasilitasKeluarUser']);
+        $this->middleware('checkrole:user')->only(['FasilitasKeluarUser']);
+    }
+
     public function FasilitasKeluar()
     {
         $categories = Category::all();
         $facilities = Facility::with('category')->get();
         return view('admin.fasilitaskeluar', compact('categories', 'facilities'));
-       
+    }
+
+    public function FasilitasKeluarUser()
+    {
+        $categories = Category::all();
+        $facilities = Facility::with('category')->get();
+        return view('user.fasilitaskeluar', compact('categories', 'facilities'));
     }
 
     public function store(Request $request)
     {
-    $request->validate([
-        'categories_id' => 'required|exists:categories,id',
-        'nama_fasilitas' => 'required|string|max:255',
-        'keterangan_fasilitas' => 'required|string|max:255',
-        'status' => 'required|string|max:255',
-        'jumlah' => 'required|integer',
-        'tanggal' => 'required|date',
-        'nama_file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-    ]);
-    
-    
-    if ($request->hasFile('nama_file')) {
-        $file = $request->file('nama_file');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $path = $file->storeAs('public/uploads', $filename);
-    }
+        $request->validate([
+            'categories_id' => 'required|exists:categories,id',
+            'nama_fasilitas' => 'required|string|max:255',
+            'keterangan_fasilitas' => 'required|string|max:255',
+            'status' => 'required|string|max:255',
+            'jumlah' => 'required|integer',
+            'tanggal' => 'required|date',
+            'nama_file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('nama_file')) {
+            $file = $request->file('nama_file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('public/uploads'), $filename);
+        }
 
         Facility::create([
             'categories_id' => $request->categories_id,
@@ -53,7 +63,7 @@ class OutFacilityController extends Controller
     {
         $validatedData = $request->validate([
             'categories_id' => 'required|exists:categories,id',
-            'nama_fasilitas' => 'requirefd|string|max:255',
+            'nama_fasilitas' => 'required|string|max:255',
             'keterangan_fasilitas' => 'required|string|max:255',
             'status' => 'required|string|max:255',
             'jumlah' => 'required|integer',
@@ -64,34 +74,29 @@ class OutFacilityController extends Controller
         $facility = Facility::findOrFail($id);
 
         if ($request->hasFile('nama_file')) {
-            // Delete old file if exists
             if ($facility->nama_file && file_exists(public_path('public/uploads/' . $facility->nama_file))) {
                 unlink(public_path('public/uploads/' . $facility->nama_file));
             }
-    
+
             $file = $request->file('nama_file');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('public/uploads'), $filename);
-    
+
             $validatedData['nama_file'] = $filename;
         } else {
-            $validatedData['nama_file'] = $facility->nama_file; // Retain the old file if no new file is uploaded
-        };
+            $validatedData['nama_file'] = $facility->nama_file;
+        }
 
         if (in_array($validatedData['status'], ['dipinjam', 'rusak'])) {
             $jumlah_keluar = $request->input('jumlah_keluar', 0);
             if ($jumlah_keluar > 0 && $jumlah_keluar <= $facility->jumlah) {
                 $facility->jumlah -= $jumlah_keluar;
                 $facility->save();
-                
-                // Log the stock update in facility's history or audit log if needed
             }
         }
 
-        // Update facility details
         $facility->update($validatedData);
 
-        // Redirect with success message
         return redirect()->route('admin.fasilitaskeluar')->with('success', 'Data fasilitas berhasil diperbarui');
     }
 
