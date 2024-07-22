@@ -17,13 +17,15 @@ class AuthController extends Controller
 
     public function showLoginForm()
     {
-        return view('auth.login');
+        $title = "Login";
+        return view('auth.login', compact('title'));
     }
 
     public function User()
     {
+        $title = "Data User";
         $users = User::all();
-        return view('admin.user', compact('users'));
+        return view('admin.user', compact('title', 'users'));
     }
 
     public function login(Request $request)
@@ -58,7 +60,8 @@ class AuthController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        $title = "Register";
+        return view('auth.register', compact('title'));
     }
 
     public function register(Request $request)

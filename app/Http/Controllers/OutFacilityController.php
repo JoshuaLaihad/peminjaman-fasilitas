@@ -16,16 +16,18 @@ class OutFacilityController extends Controller
 
     public function FasilitasKeluar()
     {
+        $title = "Data Fasilitas Keluar";
         $categories = Category::all();
         $facilities = Facility::with('category')->get();
-        return view('admin.fasilitaskeluar', compact('categories', 'facilities'));
+        return view('admin.fasilitaskeluar', compact('title', 'categories', 'facilities'));
     }
 
     public function FasilitasKeluarUser()
     {
+        $title = "Data Fasilitas Keluar User";
         $categories = Category::all();
         $facilities = Facility::with('category')->get();
-        return view('user.fasilitaskeluar', compact('categories', 'facilities'));
+        return view('user.fasilitaskeluar', compact('title', 'categories', 'facilities'));
     }
 
     public function store(Request $request)

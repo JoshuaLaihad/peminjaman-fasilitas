@@ -14,8 +14,9 @@ class CategoryController extends Controller
 
     public function Kategori()
     {
+        $title = "Data Kategori Fasilitas";
         $categories = Category::all();
-        return view('admin.kategori', compact('categories'));
+        return view('admin.kategori', compact('title', 'categories'));
     }
 
     public function store(Request $request)
@@ -28,7 +29,7 @@ class CategoryController extends Controller
             'kategori_fasilitas' => $request->kategori_fasilitas,
         ]);
 
-        return redirect()->route('admin.kategori')->with('success', 'Category created successfully.');
+        return redirect()->route('admin.kategori')->with('success', 'Kategori Fasilitas Berhasil Dibuat.');
     }
 
     public function update(Request $request, $id)
@@ -42,7 +43,7 @@ class CategoryController extends Controller
             'kategori_fasilitas' => $request->kategori_fasilitas,
         ]);
 
-        return redirect()->route('admin.kategori')->with('success', 'Category updated successfully.');
+        return redirect()->route('admin.kategori')->with('success', 'Kategori Fasilitas Berhasil Diperbarui.');
     }
 
     public function destroy($id)
@@ -50,6 +51,6 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $category->delete();
 
-        return redirect()->route('admin.kategori')->with('success', 'Category deleted successfully.');
+        return redirect()->route('admin.kategori')->with('success', 'Kategori Fasilitas Berhasil Dihapus.');
     }
 }

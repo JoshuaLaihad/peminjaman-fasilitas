@@ -4,7 +4,7 @@
 	<div class="content">
 		<div class="page-inner">
 			<div class="page-header">
-				<h4 class="page-title">Data User</h4>
+				<h4 class="page-title">Data User Admin</h4>
 			</div>
 			<div class="row">
 
@@ -12,7 +12,7 @@
 					<div class="card">
 						<div class="card-header">
 							<div class="d-flex align-items-center">
-								<h4 class="card-title">Data User Admin</h4>
+								<h4 class="card-title">Data User</h4>
 								@if(session('success'))
 									<div class="alert alert-success">
 										{{ session('success') }}
@@ -64,7 +64,7 @@
 												</div>
 												<div class="form-group">
 													<label>Password</label>
-													<input type="password" class="form-control" name="password" placeholder="Password..." required>
+													<input type="password" class="form-control input-border-bottom" name="password" placeholder="Password..." required>
 												</div>
 												<div class="form-group">
 													<h5>Role</h5>

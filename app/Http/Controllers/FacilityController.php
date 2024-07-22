@@ -17,16 +17,18 @@ class FacilityController extends Controller
 
     public function Fasilitas()
     {
+        $title = "Data Fasilitas";
         $facilities = Facility::with('category')->get();
         $categories = Category::all();
-        return view('admin.fasilitas', compact('facilities', 'categories'));
+        return view('admin.fasilitas', compact('title', 'facilities', 'categories'));
     }
 
     public function FasilitasUser()
     {
+        $title = "Data Fasilitas";
         $facilities = Facility::with('category')->get();
         $categories = Category::all();
-        return view('user.fasilitas', compact('facilities', 'categories'));
+        return view('user.fasilitas', compact('title', 'facilities', 'categories'));
     }
 
     public function store(Request $request)
@@ -57,7 +59,7 @@ class FacilityController extends Controller
             'nama_file' => $filename,
         ]);
 
-        return redirect()->route('admin.fasilitas')->with('success', 'Data berhasil ditambahkan');
+        return redirect()->route('admin.fasilitas')->with('success', 'Data Fasilitas Berhasil Ditambahkan');
     }
 
     public function update(Request $request, $id)
@@ -106,13 +108,13 @@ class FacilityController extends Controller
             $facility->update($validatedData);
         }
 
-        return redirect()->route('admin.fasilitas')->with('success', 'Data fasilitas berhasil diperbarui');
+        return redirect()->route('admin.fasilitas')->with('success', 'Data Fasilitas Berhasil Diperbarui');
     }
 
     public function destroy($id)
     {
         $facility = Facility::find($id);
         $facility->delete();
-        return redirect()->route('admin.fasilitas')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('admin.fasilitas')->with('success', 'Data Fasilitas Berhasil Dihapus');
     }
 }

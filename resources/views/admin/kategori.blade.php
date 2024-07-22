@@ -4,7 +4,7 @@
 	<div class="content">
 		<div class="page-inner">
 			<div class="page-header">
-				<h4 class="page-title">Data Kategori</h4>
+				<h4 class="page-title">Data Kategori Admin</h4>
 			</div>
 			<div class="row">
 
@@ -12,7 +12,7 @@
 					<div class="card">
 						<div class="card-header">
 							<div class="d-flex align-items-center">
-								<h4 class="card-title">Data Kategori Admin</h4>
+								<h4 class="card-title">Data Kategori </h4>
 								@if(session('success'))
 									<div class="alert alert-success">
 										{{ session('success') }}
@@ -133,14 +133,14 @@
 									<thead>
 										<tr>
 											<th>No</th>
-											<th>Nama</th>
+											<th>Kategori Fasilitas</th>
 											<th style="width: 10%">Action</th>
 										</tr>
 									</thead>
 									<tfoot>
 										<tr>
 											<th>No</th>
-											<th>Nama</th>
+											<th>Kategori Fasilitas</th>
 											<th style="width: 10%">Action</th>
 										</tr>
 									</tfoot>

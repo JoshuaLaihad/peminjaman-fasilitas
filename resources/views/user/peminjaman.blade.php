@@ -22,7 +22,7 @@
 				</div>
 				<div class="card-body">
 					<!-- Form Peminjaman -->
-					<form action="{{ route('userf.peminjaman.store') }}" method="POST">
+					<form action="{{ route('user.peminjaman.store') }}" method="POST">
 						@csrf
 						<!-- Informasi Peminjam -->
 						<h2>Informasi Peminjam</h2>
@@ -41,7 +41,7 @@
 						<hr> <!-- Garis Pembatas -->
 					
 						<!-- Informasi Aset -->
-						<h2>Informasi Aset</h2>
+						<h2>Informasi Fasilitas</h2>
 						<div class="form-group">
 							<label for="category">Kategori Fasilitas</label>
 							<select name="category_id" id="category" class="form-control">
@@ -71,16 +71,18 @@
 						</div>
 						<div class="form-group">
 							<label for="status">Status Peminjaman</label>
-                            <select class="form-control" id="status" name="status">
+							<input type="text" class="form-control" id="status" name="status" value="Pending" readonly>
+						
+                            {{-- <select class="form-control" id="status" name="status">
 								<option value="Pending" selected>Pending</option>
-                            </select>
+                            </select> --}}
                         </div>
 						<div class="form-group">
 							<label for="jumlah_dipinjam">Jumlah Dipinjam</label>
 							<input type="text" class="form-control" id="jumlah_dipinjam" name="jumlah_dipinjam" required>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary"><i></i>Save Changes</button>
+							<button type="submit" class="btn btn-primary"><i></i>Ajukan Peinjaman</button>
 						</div>
 					</form>
 				</div>

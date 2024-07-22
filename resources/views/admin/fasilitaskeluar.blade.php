@@ -4,7 +4,7 @@
 	<div class="content">
 		<div class="page-inner">
 			<div class="page-header">
-				<h4 class="page-title">Data Fasilitas Keluar</h4>
+				<h4 class="page-title">Data Fasilitas Keluar Admin</h4>
 			</div>
 			<div class="row">
 
@@ -12,7 +12,7 @@
 					<div class="card">
 						<div class="card-header">
 							<div class="d-flex align-items-center">
-								<h4 class="card-title">Data Fasilitas Keluar Admin</h4>
+								<h4 class="card-title">Data Fasilitas Keluar </h4>
 								<button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#modalCreate">
 									<i class="fa fa-plus"></i>
 									Tambah Data
@@ -195,7 +195,6 @@
 											<th>Keterangan Fasilitas</th>
 											<th>Status</th>
 											<th>Jumlah</th>
-											<th>Tanggal</th>
 											<th>Gambar</th>
 											<th style="width: 10%">Action</th>
 										</tr>
@@ -223,8 +222,7 @@
 												<td>{{$row->keterangan_fasilitas}}</td>
 												<td>{{$row->status}}</td>
 												<td>{{$row->jumlah}}</td>
-												<td>{{$row->tanggal}}</td>
-												<td><img src="{{ asset('public/uploads/' . $row->nama_file) }}" width="100px"></td>
+												<td><img src="{{ asset('uploads/' . $row->nama_file) }}" width="100px"></td>
 												<td>
 													<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
 													<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>

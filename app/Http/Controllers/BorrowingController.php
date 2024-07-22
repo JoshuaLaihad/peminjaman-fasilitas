@@ -18,23 +18,24 @@ class BorrowingController extends Controller
     // Display a listing of the resource for admin.
     public function PeminjamanAdmin()
     {
+        $title = "Peminjaman";
         $borrowings = Borrowing::with(['facility', 'user'])->get();
         $facilities = Facility::with('category')->get();
         $categories = $facilities->pluck('category')->unique('id');
-
-        return view('admin.peminjaman', compact('borrowings', 'categories', 'facilities'));
+        return view('admin.peminjaman', compact('title', 'borrowings', 'categories', 'facilities'));
     }
 
     // Display a listing of the resource for user.
     public function PeminjamanUser()
     {
+        $title = "Peminjaman";
         $borrowings = Borrowing::with(['facility', 'user'])
             ->where('user_id', Auth::id())
             ->get();
         $facilities = Facility::with('category')->get();
         $categories = $facilities->pluck('category')->unique('id');
 
-        return view('user.peminjaman', compact('borrowings', 'categories', 'facilities'));
+        return view('user.peminjaman', compact('title', 'borrowings', 'categories', 'facilities'));
     }
 
     // Store a newly created resource in storage for admin.

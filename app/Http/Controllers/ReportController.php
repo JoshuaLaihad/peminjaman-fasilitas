@@ -17,18 +17,20 @@ class ReportController extends Controller
 
     public function adminLaporan()
     {
+        $title = "Laporan Peminjaman";
         $borrowings = Borrowing::with(['facility', 'user'])->get();
         $facilities = Facility::with('category')->get();
-        return view('admin.laporan', compact('borrowings', 'facilities'));
+        return view('admin.laporan', compact('title', 'borrowings', 'facilities'));
     }
 
     public function userLaporan()
     {
+        $title = "Laporan Peminjaman";
         $borrowings = Borrowing::with(['facility', 'user'])
             ->where('user_id', Auth::id())
             ->get();
         $facilities = Facility::with('category')->get();
-        return view('user.laporan', compact('borrowings', 'facilities'));
+        return view('user.laporan', compact('title', 'borrowings', 'facilities'));
     }
 
     public function update(Request $request, $id)
@@ -84,6 +86,6 @@ class ReportController extends Controller
     {
         $borrowing = Borrowing::find($id);
         $borrowing->delete();
-        return redirect()->route('admin.laporan')->with('success', 'Borrowing deleted successfully.');
+        return redirect()->route('admin.laporan')->with('success', 'Laporan Peminjaman Berhasil Dihapus.');
     }
 }

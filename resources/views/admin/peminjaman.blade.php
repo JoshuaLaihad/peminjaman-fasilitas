@@ -8,7 +8,7 @@
 			</div>
 			<div class="card">
 				<div class="card-header">
-					<div class="card-title">Form Peminjaman Fasiltias Admin</div>
+					<div class="card-title">Form Peminjaman Fasiltias </div>
 					@if(session('success'))
 						<div class="alert alert-success">
 							{{ session('success') }}
@@ -41,7 +41,7 @@
 						<hr> <!-- Garis Pembatas -->
 					
 						<!-- Informasi Aset -->
-						<h2>Informasi Aset</h2>
+						<h2>Informasi Fasiltias</h2>
 						<div class="form-group">
 							<label for="category">Kategori Fasilitas</label>
 							<select name="category_id" id="category" class="form-control">
@@ -71,16 +71,18 @@
 						</div>
 						<div class="form-group">
 							<label for="status">Status Peminjaman</label>
-                            <select class="form-control" id="status" name="status">
+							<input type="text" class="form-control" id="status" name="status" value="Pending" readonly>
+						
+                            {{-- <select class="form-control" id="status" name="status">
 								<option value="Pending" selected>Pending</option>
-                            </select>
+                            </select> --}}
                         </div>
 						<div class="form-group">
 							<label for="jumlah_dipinjam">Jumlah Dipinjam</label>
 							<input type="text" class="form-control" id="jumlah_dipinjam" name="jumlah_dipinjam" required>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary"><i></i>Save Changes</button>
+							<button type="submit" class="btn btn-primary"><i></i>Ajukan Peminjaman</button>
 						</div>
 					</form>
 				</div>

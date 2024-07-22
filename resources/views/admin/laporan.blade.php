@@ -167,6 +167,7 @@
 													<td>{{$row->tanggal_sampai}}</td>
 													<td>{{$row->jumlah_dipinjam}}</td>
 													<td>{{$row->status}}</td>
+													
 												<td>
 													<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
 													<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>
