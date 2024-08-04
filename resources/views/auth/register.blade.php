@@ -75,13 +75,24 @@
 					<label for="asal_departemen" class="placeholder" value="{{ old('asal_departemen') }}">Asal Departemen / Jurusan</label>
 					<div class="show-asal_departemen">
 					</div>
-					</div>
+				</div>
 						@error('asal_departemen')
 								<small>{{ $message }}</small>
 						@enderror
 				
-				<div class="row form-sub m-0">
+				<div class="form-group form-floating-label position-relative">
+						<input id="chat_id" name="chat_id" type="number" class="form-control input-border-bottom" required value="{{ old('chat_id') }}">
+						<label for="chat_id" class="placeholder">Chat ID</label>
+						<a target="_blank" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);" title="Untuk mendapatkan Chat ID Anda, kirim pesan ke '@userinfobot' dan klik '/start'. Anda akan menerima Chat ID Anda dari bot tersebut, Untuk Melakukan Peminjaman Aset."><i class="fas fa-info-circle"></i></a>
+						@error('chat_id')
+							<small>{{ $message }}</small>
+						@enderror
 				</div>
+
+				<div class="form-group">
+					<a href="https://t.me/userinfobot" target="_blank">Dapatkan Chat id</a>
+				</div>
+
 				<div class="form-action mb-3">
 					<button type="submit" class="btn btn-primary btn-rounded btn-login">Sign Up</button>
 				</div>

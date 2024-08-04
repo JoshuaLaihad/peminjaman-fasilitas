@@ -23,7 +23,6 @@
 											<th>Status</th>
 											<th>Jumlah</th>
 											<th>Gambar</th>
-											<th style="width: 10%">Action</th>
 										</tr>
 									</thead>
 									<tfoot>
@@ -35,7 +34,6 @@
 											<th>Status</th>
 											<th>Jumlah</th>
 											<th>Gambar</th>
-											<th>Action</th>
 										</tr>
 									</tfoot>
 									<tbody>
@@ -50,10 +48,6 @@
 												<td>{{$row->status}}</td>
 												<td>{{$row->jumlah}}</td>
 												<td><img src="{{ asset('uploads/' . $row->nama_file) }}" width="100px"></td>
-												<td>
-													<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
-													<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>
-												</td>
 											</tr>
 											@endif
 										@endforeach

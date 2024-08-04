@@ -7,7 +7,7 @@
 			<h4 class="page-title">Dashboard Admin</h4>
 			<div class="row">
 				<div class="col">
-					<div class="card card-stats card-round">
+					<a href="{{ route('admin.user') }}" class="card card-stats card-round text-decoration-none">
 						<div class="card-body ">
 							<div class="row align-items-center">
 								<div class="col-icon">
@@ -23,10 +23,10 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
 				<div class="col">
-					<div class="card card-stats card-round">
+					<a href="{{ route('admin.kategori') }}" class="card card-stats card-round">
 						<div class="card-body">
 							<div class="row align-items-center">
 								<div class="col-icon">
@@ -42,12 +42,12 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col">
-					<div class="card card-stats card-round">
+					<a href="{{ route('admin.fasilitas') }}" class="card card-stats card-round">
 						<div class="card-body">
 							<div class="row align-items-center">
 								<div class="col-icon">
@@ -63,10 +63,10 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
 				<div class="col">
-					<div class="card card-stats card-round">
+					<a href="{{ route('admin.fasilitaskeluar') }}" class="card card-stats card-round">
 						<div class="card-body">
 							<div class="row align-items-center">
 								<div class="col-icon">
@@ -82,12 +82,12 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col">
-					<div class="card card-stats card-round">
+					<a href="{{ route('admin.peminjaman') }}" class="card card-stats card-round">
 						<div class="card-body ">
 							<div class="row align-items-center">
 								<div class="col-icon">
@@ -103,10 +103,10 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
 				<div class="col">
-					<div class="card card-stats card-round">
+					<a href="{{ route('admin.laporan') }}" class="card card-stats card-round">
 						<div class="card-body">
 							<div class="row align-items-center">
 								<div class="col-icon">
@@ -122,7 +122,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
 			</div>
 		</div>

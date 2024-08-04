@@ -31,6 +31,9 @@ class Facility extends Model
         return $this->belongsTo(Category::class, 'categories_id');
     }
 
-
+    public function borrowings()
+    {
+        return $this->hasMany(Borrowing::class, 'fasilitas_id');
+    }
     
 }

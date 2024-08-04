@@ -72,14 +72,16 @@ class AuthController extends Controller
             'password' => 'required|string|min:8',
             'no_handphone' => 'required|string|max:15',
             'asal_departemen' => 'required|string|max:255',
+            'chat_id' => 'nullable|string',
         ]);
-
+        
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'no_handphone' => $request->no_handphone,
             'asal_departemen' => $request->asal_departemen,
+            'chat_id' => $request->chat_id,
         ]);
 
         $login = [
@@ -103,6 +105,7 @@ class AuthController extends Controller
             'no_handphone' => 'required|string|max:15',
             'asal_departemen' => 'required|string|max:255',
             'role' => 'required',
+            'chat_id' => 'nullable|string',
         ]);
 
         User::create([
@@ -112,6 +115,7 @@ class AuthController extends Controller
             'no_handphone' => $request->no_handphone,
             'asal_departemen' => $request->asal_departemen,
             'role' => $request->role,
+            'chat_id' => $request->chat_id,
         ]);
 
         return redirect()->route('admin.user')->with('success', 'Data berhasil ditambahkan');
@@ -126,6 +130,7 @@ class AuthController extends Controller
             'asal_departemen' => 'required|string|max:255',
             'password' => 'nullable|string|min:8',
             'role' => 'required',
+            'chat_id' => 'nullable|string',
         ]);
 
         $user = User::findOrFail($id);
@@ -136,6 +141,7 @@ class AuthController extends Controller
             'no_handphone' => $request->no_handphone,
             'asal_departemen' => $request->asal_departemen,
             'role' => $request->role,
+            'chat_id' => $request->chat_id,
         ];
 
         if($request->filled('password')){

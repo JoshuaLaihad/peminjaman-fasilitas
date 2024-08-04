@@ -236,7 +236,7 @@
 													<td>{{$row->status}}</td>
 													<td>{{$row->jumlah}}</td>
 													<td>{{$row->tanggal}}</td>
-													<td><img src="{{ asset('uploads/' . $row->nama_file) }}" width="100px"></td>
+													<td><img src="{{ asset('uploads/' . $row->nama_file) }}" style="width: 125px; height: 75px;"></td>
 													<td>
 														<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
 														<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>

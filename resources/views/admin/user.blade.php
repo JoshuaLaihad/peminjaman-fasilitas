@@ -76,8 +76,13 @@
 														<input class="form-check-input" type="radio" name="role" id="roleAdmin" value="admin" required>
 														<label class="form-check-label" for="roleAdmin">Admin</label>
 													</div>
-												</div>                                        
+												</div>    
+												<div class="form-group">
+													<label>Chat ID</label>
+													<input id="chat_id" name="chat_id" type="number" class="form-control input-border-bottom" required>
+												</div>                                    
 											</div>
+
 											<div class="modal-footer">
 												<button type="submit" class="btn btn-primary"><i></i>Save Changes</button>
 												<button type="button" class="btn btn-danger" data-dismiss="modal"><i></i>Undo</button>
@@ -137,6 +142,10 @@
 														<label class="form-check-label" for="roleAdmin{{ $d->id }}">Admin</label>
 													</div>
 												</div>
+												<div class="form-group">
+													<label>Chat ID</label>
+													<input id="chat_id" name="chat_id" type="number" class="form-control input-border-bottom" value="{{ $d->chat_id }}" required>
+												</div>  
 											</div>
 											<div class="modal-footer">
 												<button type="submit" class="btn btn-primary"><i></i>Save Changes</button>
@@ -192,6 +201,7 @@
 											<th>Nomor Handphone</th>
 											<th>Asal Departemen / Jurusan</th>
 											<th>Role</th>
+											<th>Chat ID</th>
 											<th style="width: 10%">Action</th>
 										</tr>
 									</thead>
@@ -203,6 +213,7 @@
 											<th>Nomor Handphone</th>
 											<th>Asal Departemen / Jurusan</th>
 											<th>Role</th>
+											<th>Chat ID</th>
 											<th style="width: 10%">Action</th>
 										</tr>
 									</tfoot>
@@ -216,6 +227,7 @@
 										   <td>{{$row->no_handphone}}</td>
 										   <td>{{$row->asal_departemen}}</td>
 										   <td>{{$row->role}}</td>
+										   <td>{{$row->chat_id}}</td>
 										  <td>
 											<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
 											<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>

@@ -21,6 +21,9 @@
 					@endif
 				</div>
 				<div class="card-body">
+					<div class="alert alert-info mt-4">
+                        <p>Sebelum Melakukan Pengisian Form Peminjaman, klik <a href="https://t.me/ApfpBot" target="_blank">di sini </a>agar bot dapat mengenali chat id anda dan klik tombol atau ketikkan <strong>/start</strong> pada bot, ketika sudah selesai silahkan lanjutkan pengisian form.</p>
+                    </div>
 					<!-- Form Peminjaman -->
 					<form action="{{ route('admin.peminjaman.store') }}" method="POST">
 						@csrf
