@@ -51,28 +51,26 @@ Route::middleware(['auth', 'checkrole:admin', 'PreventBackHistory'])->group(func
 
     Route::get('/admin/user', [AuthController::class, 'User'])->name('admin.user');
     Route::post('/admin/user', [AuthController::class, 'store'])->name('admin.user.store');
-    Route::put('/admin/user/{id}/update', [AuthController::class, 'update'])->name('admin.user.update');
-    Route::get('/admin/user/{id}/destroy', [AuthController::class, 'destroy'])->name('admin.user.destroy');
+    Route::put('/admin/user/{id_user}/update', [AuthController::class, 'update'])->name('admin.user.update');
+    Route::get('/admin/user/{id_user}/destroy', [AuthController::class, 'destroy'])->name('admin.user.destroy');
 
     Route::get('/admin/kategori', [CategoryController::class, 'Kategori'])->name('admin.kategori');
     Route::post('/admin/kategori', [CategoryController::class, 'store'])->name('admin.kategori.store');
-    Route::put('/admin/kategori/{id}/update', [CategoryController::class, 'update'])->name('admin.kategori.update');
-    Route::get('/admin/kategori/{id}/destroy', [CategoryController::class, 'destroy'])->name('admin.kategori.destroy');
+    Route::put('/admin/kategori/{id_category}/update', [CategoryController::class, 'update'])->name('admin.kategori.update');
+    Route::get('/admin/kategori/{id_category}/destroy', [CategoryController::class, 'destroy'])->name('admin.kategori.destroy');
 
     Route::get('/admin/fasilitas', [FacilityController::class, 'Fasilitas'])->name('admin.fasilitas');
     Route::post('/admin/fasilitas', [FacilityController::class, 'store'])->name('admin.fasilitas.store');
-    Route::put('/admin/fasilitas/{id}/update', [FacilityController::class, 'update'])->name('admin.fasilitas.update');
-    Route::get('/admin/fasilitas/{id}/destroy', [FacilityController::class, 'destroy'])->name('admin.fasilitas.destroy');
+    Route::put('/admin/fasilitas/{id_fasilitas}/update', [FacilityController::class, 'update'])->name('admin.fasilitas.update');
+    Route::get('/admin/fasilitas/{id_fasilitas}/destroy', [FacilityController::class, 'destroy'])->name('admin.fasilitas.destroy');
 
     Route::get('/admin/fasilitaskeluar', [OutFacilityController::class, 'FasilitasKeluar'])->name('admin.fasilitaskeluar');
     Route::post('/admin/fasilitaskeluar', [OutFacilityController::class, 'store'])->name('admin.fasilitaskeluar.store');
-    Route::put('/admin/fasilitaskeluar/{id}/update', [OutFacilityController::class, 'update'])->name('admin.fasilitaskeluar.update');
-    Route::get('/admin/fasilitaskeluar/{id}/destroy', [OutFacilityController::class, 'destroy'])->name('admin.fasilitaskeluar.destroy');
 
     Route::get('/admin/peminjaman', [BorrowingController::class, 'PeminjamanAdmin'])->name('admin.peminjaman');
     Route::post('/admin/peminjaman', [BorrowingController::class, 'storeAdmin'])->name('admin.peminjaman.store');
 
     Route::get('/admin/laporan', [ReportController::class, 'adminLaporan'])->name('admin.laporan');
-    Route::put('/admin/laporan/{id}/update', [ReportController::class, 'update'])->name('admin.laporan.update');
-    Route::get('/admin/laporan/{id}/destroy', [ReportController::class, 'destroy'])->name('admin.laporan.destroy');
+    Route::put('/admin/laporan/{id_borrowing}/update', [ReportController::class, 'update'])->name('admin.laporan.update');
+    Route::get('/admin/laporan/{id_borrowing}/destroy', [ReportController::class, 'destroy'])->name('admin.laporan.destroy');
 });

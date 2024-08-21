@@ -67,11 +67,11 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users',
+            'name' => 'required|string|max:40',
+            'username' => 'required|string|max:30|unique:users',
             'password' => 'required|string|min:8',
             'no_handphone' => 'required|string|max:15',
-            'asal_departemen' => 'required|string|max:255',
+            'asal' => 'required|string|max:50',
             'chat_id' => 'nullable|string',
         ]);
         
@@ -80,7 +80,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'no_handphone' => $request->no_handphone,
-            'asal_departemen' => $request->asal_departemen,
+            'asal' => $request->asal,
             'chat_id' => $request->chat_id,
         ]);
 
@@ -99,11 +99,11 @@ class AuthController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users',
+            'name' => 'required|string|max:40',
+            'username' => 'required|string|max:30|unique:users',
             'password' => 'required|string|min:8',
             'no_handphone' => 'required|string|max:15',
-            'asal_departemen' => 'required|string|max:255',
+            'asal' => 'required|string|max:50',
             'role' => 'required',
             'chat_id' => 'nullable|string',
         ]);
@@ -113,7 +113,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'no_handphone' => $request->no_handphone,
-            'asal_departemen' => $request->asal_departemen,
+            'asal' => $request->asal,
             'role' => $request->role,
             'chat_id' => $request->chat_id,
         ]);
@@ -121,25 +121,25 @@ class AuthController extends Controller
         return redirect()->route('admin.user')->with('success', 'Data berhasil ditambahkan');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_user)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username,'.$id,
-            'no_handphone' => 'required|numeric',
-            'asal_departemen' => 'required|string|max:255',
+            'name' => 'required|string|max:40',
+            'username' => 'required|string|max:30|unique:users,username,'.$id_user.',id_user',  // Tambahkan pengecualian untuk pengguna ini
             'password' => 'nullable|string|min:8',
+            'no_handphone' => 'required|string|max:15',
+            'asal' => 'required|string|max:50',
             'role' => 'required',
             'chat_id' => 'nullable|string',
-        ]);
+        ]);        
 
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($id_user);
 
         $userData = [
             'name' => $request->name,
             'username' => $request->username,
             'no_handphone' => $request->no_handphone,
-            'asal_departemen' => $request->asal_departemen,
+            'asal' => $request->asal,
             'role' => $request->role,
             'chat_id' => $request->chat_id,
         ];
@@ -153,9 +153,9 @@ class AuthController extends Controller
         return redirect()->route('admin.user')->with('success', 'Data berhasil diperbarui');
     }
 
-    public function destroy($id)
+    public function destroy($id_user)
     {
-        $user = User::find($id);
+        $user = User::find($id_user);
         $user->delete();
 
         return redirect()->route('admin.user')->with('success', 'Data berhasil dihapus');

@@ -12,17 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('facilities', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('categories_id');
-            $table->string('nama_fasilitas');
-            $table->string('keterangan_fasilitas')->nullable();
-            $table->string('status')->nullable();
+            $table->bigIncrements('id_facility');
+            $table->unsignedBigInteger('id_category');
+            $table->string('nama_fasilitas', 40);
+            $table->string('keterangan_fasilitas', 40)->nullable();
+            $table->enum('status', ['Tersedia', 'Dipinjam', 'Rusak'])->default('Tersedia');
             $table->integer('jumlah')->nullable();
             $table->date('tanggal')->nullable();
-            $table->string('nama_file');
-            $table->foreign('categories_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->string('nama_gambar');
             $table->timestamps();
+
+            // Foreign key constraints
+            $table->foreign('id_category')->references('id_category')->on('categories')->onDelete('cascade');
         });
+        
     }
 
     /**

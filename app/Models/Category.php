@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Models; // Menyatakan namespace dari kelas ini.
+namespace App\Models; 
 
-use Illuminate\Database\Eloquent\Factories\HasFactory; // Menggunakan trait HasFactory untuk mendukung pembuatan factory.
-use Illuminate\Database\Eloquent\Model; // Menggunakan kelas Model dari Eloquent ORM.
+use Illuminate\Database\Eloquent\Factories\HasFactory; 
+use Illuminate\Database\Eloquent\Model; 
 
-class Category extends Model // Mendefinisikan kelas Category yang merupakan model Eloquent.
+class Category extends Model 
 {
-    use HasFactory; // Menggunakan trait HasFactory untuk mendukung pembuatan factory.
+    use HasFactory; 
 
-    protected $table = 'categories'; // Menentukan nama tabel di database yang diwakili oleh model ini.
+    protected $table = 'categories'; 
+    protected $primaryKey = 'id_category';
 
-    public $timestamps = false; // Menonaktifkan pengelolaan otomatis kolom created_at dan updated_at.
+    public $timestamps = false;
 
     protected $fillable = [
-        'kategori_fasilitas', // Menentukan bahwa kolom kategori_fasilitas dapat diisi secara massal.
+        'kategori_fasilitas',
     ];
 
-    public function facilities() // Mendefinisikan relasi one-to-many dengan model Facility.
+    public function facilities()
     {
-        return $this->hasMany(Facility::class, 'categories_id', 'id'); // Relasi hasMany ke model Facility menggunakan foreign key categories_id.
+        return $this->hasMany(Facility::class, 'id_category', 'id_category'); 
     }
 }

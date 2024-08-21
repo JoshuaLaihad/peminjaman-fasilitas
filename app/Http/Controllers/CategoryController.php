@@ -22,7 +22,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kategori_fasilitas' => 'required|string|max:255',
+            'kategori_fasilitas' => 'required|string|max:40',
         ]);
 
         Category::create([
@@ -32,13 +32,13 @@ class CategoryController extends Controller
         return redirect()->route('admin.kategori')->with('success', 'Kategori Fasilitas Berhasil Dibuat.');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_category)
     {
         $request->validate([
-            'kategori_fasilitas' => 'required|string|max:255',
+            'kategori_fasilitas' => 'required|string|max:40',
         ]);
 
-        $category = Category::findOrFail($id);
+        $category = Category::findOrFail($id_category);
         $category->update([
             'kategori_fasilitas' => $request->kategori_fasilitas,
         ]);
@@ -46,9 +46,9 @@ class CategoryController extends Controller
         return redirect()->route('admin.kategori')->with('success', 'Kategori Fasilitas Berhasil Diperbarui.');
     }
 
-    public function destroy($id)
+    public function destroy($id_category)
     {
-        $category = Category::find($id);
+        $category = Category::find($id_category);
         $category->delete();
 
         return redirect()->route('admin.kategori')->with('success', 'Kategori Fasilitas Berhasil Dihapus.');

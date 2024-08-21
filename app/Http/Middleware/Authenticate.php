@@ -28,12 +28,12 @@ class Authenticate extends Middleware
 
         // Redirect admin trying to access user pages
         if ($user->role == 'admin' && $request->is('user/*')) {
-            return route('login');
+            return redirect()->route('login')->with('failed', 'Anda tidak memiliki akses ke halaman ini.');
         }
 
         // Redirect user trying to access admin pages
         if ($user->role == 'user' && $request->is('admin/*')) {
-            return route('login');
+            return redirect()->route('login')->with('failed', 'Anda tidak memiliki akses ke halaman ini.');
         }
 
         return route('login');

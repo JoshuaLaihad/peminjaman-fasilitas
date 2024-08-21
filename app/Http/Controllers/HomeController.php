@@ -61,13 +61,13 @@ public function userDashboard()
     
     $borrowings = Borrowing::with(['user'])
         ->where('status', 'pending')
-        ->where('user_id', Auth::id())
+        ->where('id_user', Auth::id())
         ->get();
     $borrowingsCount = $borrowings->count();
     
     $reports = Borrowing::with(['user'])
         ->whereIn('status', ['diterima', 'ditolak', 'selesai'])
-        ->where('user_id', Auth::id())
+        ->where('id_user', Auth::id())
         ->get();
     $reportsCount = $reports->count();
 

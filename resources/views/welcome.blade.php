@@ -261,32 +261,28 @@
 
           <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
             <div class="service-item position-relative">
-              <div class="icon"><i class="bi bi-activity icon"></i></div>
-              <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
+              <h4><a href="" class="stretched-link">01</a></h4>
               <p>Melihat Data Fasilitas yang Bisa DIpinjam</p>
             </div>
           </div><!-- End Service Item -->
 
           <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
             <div class="service-item position-relative">
-              <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
-              <h4><a href="" class="stretched-link">Sed ut perspici</a></h4>
+              <h4><a href="" class="stretched-link">02</a></h4>
               <p>Melihat Data Fasilitas yang Telah Dipinjam</p>
             </div>
           </div><!-- End Service Item -->
 
           <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
             <div class="service-item position-relative">
-              <div class="icon"><i class="bi bi-calendar4-week icon"></i></div>
-              <h4><a href="" class="stretched-link">Magni Dolores</a></h4>
+              <h4><a href="" class="stretched-link">03</a></h4>
               <p>Melakukan Peminjaman Barang dengan Mudah. Dimana Saja dan Kapan Saja</p>
             </div>
           </div><!-- End Service Item -->
 
           <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
             <div class="service-item position-relative">
-              <div class="icon"><i class="bi bi-broadcast icon"></i></div>
-              <h4><a href="" class="stretched-link">Nemo Enim</a></h4>
+              <h4><a href="" class="stretched-link">04</a></h4>
               <p>Melihat Laporan Peminjaman yang Telah Dilakukan</p>
             </div>
           </div><!-- End Service Item -->
@@ -309,7 +305,7 @@
           </a>
           <div class="footer-contact pt-3">
             <p>Jalan Bengkalis</p>
-            <p>Bengkalis, 28722</p>
+            <p>Bengkalis, 28711</p>
             <p class="mt-3"><strong>Phone:</strong> <span>+62 852 1025 1085</span></p>
             <p><strong>Email:</strong> <span>rysammich@gmail.com</span></p>
           </div>

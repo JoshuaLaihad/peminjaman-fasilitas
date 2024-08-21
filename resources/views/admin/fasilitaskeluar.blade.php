@@ -1,243 +1,170 @@
 @extends('partials.main')
 @section('content')
-<div class="main-panel">
-	<div class="content">
-		<div class="page-inner">
-			<div class="page-header">
-				<h4 class="page-title">Data Fasilitas Keluar Admin</h4>
-			</div>
-			<div class="row">
+    <div class="main-panel">
+        <div class="content">
+            <div class="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="d-flex align-items-center">
+                                    <h4 class="card-title">Data Fasilitas Keluar </h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
 
-				<div class="col-md-12">
-					<div class="card">
-						<div class="card-header">
-							<div class="d-flex align-items-center">
-								<h4 class="card-title">Data Fasilitas Keluar </h4>
-								<button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#modalCreate">
-									<i class="fa fa-plus"></i>
-									Tambah Data
-								</button>
-							</div>
-						</div>
-						<div class="card-body">
-							<!-- Modal Tambah-->
-							<div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header no-bd">
-											<h3 class="modal-title">
-												<span class="fw-mediumbold">Tambah</span> 
-												<span class="fw-mediumbold">Nama Fasilitas</span>
-											</h3>
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<form method="POST" action="{{ route('admin.fasilitas.store') }}" enctype="multipart/form-data">
-											@csrf
-											<div class="modal-body">
-												<div class="form-group">
-													@if ($categories->count() > 0)
-														<label for="category">Select Category</label>
-														<select name="categories_id" id="category" class="form-control">
-															@foreach($categories as $category)
-																<option value="{{ $category->id }}">{{ $category->kategori_fasilitas }}</option>
-															@endforeach
-														</select>
-													@else
-														<p>No categories available.</p>
-													@endif
-												</div>
-												<div class="form-group">
-													<label>Nama Fasilitas</label>
-													<input type="text" class="form-control" name="nama_fasilitas" placeholder="Nama Fasilitas..." required>
-												</div>
-												<div class="form-group">
-													<label>Keterangan Fasilitas</label>
-													<input type="text" class="form-control" name="keterangan_fasilitas" placeholder="Keterangan Fasilitas..." required>
-												</div>
-												<div class="form-group">
-													<label>Status</label>
-													<input type="text" class="form-control" name="status" placeholder="Status..." required>
-												</div>
-												<div class="form-group">
-													<label>Jumlah</label>
-													<input type="text" class="form-control" name="jumlah" placeholder="jumlah..." required>
-												</div>
-												<div class="form-group">
-													<label>Tanggal</label>
-													<input type="date" class="form-control" name="tanggal" placeholder="Tanggal..." required>
-												</div>
-												<div class="form-group">
-													<label for="nama_file">Upload Image</label>
-													<input type="file" class="form-control" name="nama_file" id="nama_file" required>
-												</div>												
-											</div>
-											<div class="modal-footer">
-												<button type="submit" class="btn btn-primary"><i></i>Save Changes</button>
-												<button type="button" class="btn btn-danger" data-dismiss="modal"><i></i>Undo</button>
-											</div>
-										</form>	
-									</div>
-								</div>
-							</div>
-							{{-- End Modal Tambah --}}
+                                {{-- Modal Detail --}}
+                                @foreach ($borrowings as $row)
+                                    @if ($row->facility && $row->facility->category && $row->user)
+                                        <div class="modal fade" id="modalDetail{{ $row->id_borrowing }}" tabindex="-1"
+                                            role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header no-bd">
+                                                        <h3 class="modal-title">
+                                                            <span class="fw-mediumbold">Detail</span>
+                                                            <span class="fw-mediumbold">Fasilitas Keluar</span>
+                                                        </h3>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form method="POST"
+                                                        action="{{ route('admin.laporan.update', $row->id_borrowing) }}"
+                                                        enctype="multipart/form-data">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div class="modal-body">
+                                                            <h2>Informasi Peminjam</h2>
+                                                            <div class="form-group">
+                                                                <label for="name" class="form-label">Nama
+                                                                    Peminjam</label>
+                                                                <input type="text" class="form-control" id="name"
+                                                                    name="name" value="{{ $row->user->name }}" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="no_handphone" class="form-label">Nomor
+                                                                    Handphone</label>
+                                                                <input type="text" class="form-control" id="no_handphone"
+                                                                    name="no_handphone"
+                                                                    value="{{ $row->user->no_handphone }}" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="asal" class="form-label">Asal Departemen /
+                                                                    Jurusan</label>
+                                                                <input type="text" class="form-control" id="asal"
+                                                                    name="asal" value="{{ $row->user->asal }}" readonly>
+                                                            </div>
 
-							{{-- Modal Edit --}}
-							@foreach ($facilities as $d)
-							<div class="modal fade" id="modalEdit{{ $d->id }}" tabindex="-1" role="dialog" aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header no-bd">
-											<h3 class="modal-title">
-												<span class="fw-mediumbold">Edit</span>
-												<span class="fw-mediumbold">Facility</span>
-											</h3>
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<form method="POST" action="{{ route('admin.fasilitas.update', $d->id) }}" enctype="multipart/form-data">
-											@csrf
-											@method('PUT')
-											<div class="modal-body">
-												<div class="form-group">
-													@if ($categories->count() > 0)
-														<label for="category">Select Category</label>
-														<select name="categories_id" id="category" class="form-control">
-															@foreach($categories as $category)
-																<option value="{{ $category->id }}">{{ $category->kategori_fasilitas }}</option>
-															@endforeach
-														</select>
-													@else
-														<p>No categories available.</p>
-													@endif
-												</div>
-												<div class="form-group">
-													<label>Nama Fasilitas</label>
-													<input type="text" class="form-control" name="nama_fasilitas" value="{{ $d->nama_fasilitas }}" placeholder="Nama Fasilitas..." required>
-												</div>
-												<div class="form-group">
-													<label>Keterangan Fasilitas</label>
-													<input type="text" class="form-control" name="keterangan_fasilitas" value="{{ $d->keterangan_fasilitas }}" placeholder="Keterangan Fasilitas..." required>
-												</div>
-												<div class="form-group">
-													<label>Status</label>
-													<input type="text" class="form-control" name="status" value="{{ $d->status }}" placeholder="Nama Status..." required>
-												</div>
-												<div class="form-group">
-													<label>jumlah</label>
-													<input type="text" class="form-control" name="jumlah" value="{{ $d->jumlah }}" placeholder="jumlah Fasilitas..." required>
-												</div>
-												<div class="form-group">
-													<label>Tanggal</label>
-													<input type="date" class="form-control" name="tanggal" value="{{ $d->tanggal }}" placeholder="Tanggal..." required>
-												</div>
-												<div class="form-group">
-													<label>Upload Gambar</label>
-													<input type="file" class="form-control" name="nama_file">
-													<br>
-													<img src="{{ asset('public/uploads/' . $d->nama_file) }}" width="100px" alt="current image">
-												</div>	
-											</div>
-											
-											<div class="modal-footer">
-												<button type="submit" class="btn btn-primary">Save Changes</button>
-												<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-							@endforeach
-							{{-- End Modal Edit --}}
-					
-							{{-- Modal Hapus --}}
-							@foreach ($facilities as $d)
-							<div class="modal fade" id="modalHapus{{ $d->id }}" tabindex="-1" role="dialog" aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header no-bd">
-											<h3 class="modal-title">
-												<span class="fw-mediumbold">Hapus</span>
-												<span class="fw-mediumbold">Fasilitas</span>
-											</h3>
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<form method="GET" action="{{ route('admin.fasilitaskeluar.destroy', $d->id) }}" enctype="multipart/form-data">
-											@csrf
-											@method('DELETE')
-											<div class="modal-body">
-												<div class="form-group">
-													<h4 style="text-align: center;">Apakah Anda Ingin Mengapus Data Ini?</h4>
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="submit" class="btn btn-danger"><i></i>Hapus</button>
-												<button type="button" class="btn btn-secondary" data-dismiss="modal"><i></i>Close</button>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-							@endforeach
-							{{-- End Modal Edit --}}
+                                                            <h2>Informasi Fasilitas Keluar</h2>
+                                                            <div class="form-group">
+                                                                <label for="category">Kategori Fasilitas</label>
+                                                                <input type="text" class="form-control" id="category"
+                                                                    name="category_id"
+                                                                    value="{{ $row->facility->category->kategori_fasilitas }}"
+                                                                    readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="facility">Fasilitas</label>
+                                                                <input type="text" class="form-control" id="facility"
+                                                                    name="facility_id"
+                                                                    value="{{ $row->facility->nama_fasilitas }}" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="tanggal_dari" class="form-label">Tanggal
+                                                                    Mulai</label>
+                                                                <input type="date" class="form-control" id="tanggal_dari"
+                                                                    name="tanggal_dari" value="{{ $row->tanggal_dari }}"
+                                                                    readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="tanggal_sampai" class="form-label">Tanggal
+                                                                    Sampai</label>
+                                                                <input type="date" class="form-control"
+                                                                    id="tanggal_sampai" name="tanggal_sampai"
+                                                                    value="{{ $row->tanggal_sampai }}" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>jumlah Dipinjam</label>
+                                                                <input type="text" class="form-control"
+                                                                    name="jumlah_dipinjam"
+                                                                    value="{{ $row->jumlah_dipinjam }}" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="status" class="form-label">Status</label>
+                                                                <input type="text" class="form-control" id="status"
+                                                                    name="status"
+                                                                    value="{{ $row->status === 'Diterima' ? 'Dipinjam' : $row->facility->status }}"
+                                                                    readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Detail Gambar {{ $row->keterangan_fasilitas }}</label>
+                                                                <br>
+                                                                <img src="{{ asset('uploads/' . $row->nama_gambar) }}"
+                                                                    style="width: 440px; height: 360px;">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                                {{-- End Modal Detail --}}
 
-							<div class="table-responsive">
-								<table id="add-row" class="display table table-striped table-hover" >
-									<thead>
-										<tr>
-											<th>Nomor</th>
-											<th>Kategori Fasilitas</th>
-											<th>Nama Fasilitas</th>
-											<th>Keterangan Fasilitas</th>
-											<th>Status</th>
-											<th>Jumlah</th>
-											<th>Gambar</th>
-											<th style="width: 10%">Action</th>
-										</tr>
-									</thead>
-									<tfoot>
-										<tr>
-											<th>Nomor</th>
-											<th>Kategori Fasilitas</th>
-											<th>Nama Fasilitas</th>
-											<th>Keterangan Fasilitas</th>
-											<th>Status</th>
-											<th>Jumlah</th>
-											<th>Gambar</th>
-											<th>Action</th>
-										</tr>
-									</tfoot>
-									<tbody>
-										@php $no=1 @endphp
-										@foreach ($facilities as $row)
-											@if ($row->status == 'Rusak' || $row->status == 'Dipinjam')
-											<tr>
-												<td>{{$no++}}</td>
-												<td>{{$row->category->kategori_fasilitas}}</td>
-												<td>{{$row->nama_fasilitas}}</td>
-												<td>{{$row->keterangan_fasilitas}}</td>
-												<td>{{$row->status}}</td>
-												<td>{{$row->jumlah}}</td>
-												<td><img src="{{ asset('uploads/' . $row->nama_file) }}" width="100px"></td>
-												<td>
-													<a href="#modalEdit{{$row->id}}" data-toggle="modal"class="btn btn-xs btn-primary btn-custom"><i class="fa fa-edit"></i>Edit</a>
-													<a href="#modalHapus{{$row->id}}" data-toggle="modal" class="btn btn-xs btn-danger btn-custom"><i class="fa fa-trash"></i>Hapus</a>
-												</td>
-											</tr>
-											@endif
-										@endforeach
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+
+                                <div class="table-responsive">
+                                    <table id="add-row" class="display table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama</th>
+                                                <th>Kategori Fasilitas</th>
+                                                <th>Nama Fasilitas</th>
+                                                <th>Tanggal Mulai</th>
+                                                <th>Tanggal Sampai</th>
+                                                <th style="width: 10%">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama</th>
+                                                <th>Kategori Fasilitas</th>
+                                                <th>Nama Fasilitas</th>
+                                                <th>Tanggal Mulai</th>
+                                                <th>Tanggal Sampai</th>
+                                                <th style="width: 10%">Action</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            @php $no=1 @endphp
+                                            @foreach ($borrowings as $row)
+                                                @if ($row->facility && $row->facility->category && $row->user)
+                                                    <tr>
+                                                        <td>{{ $no++ }}</td>
+                                                        <td>{{ $row->user->name }}</td>
+                                                        <td>{{ $row->facility->category->kategori_fasilitas }}</td>
+                                                        <td>{{ $row->facility->nama_fasilitas }}</td>
+                                                        <td>{{ $row->tanggal_dari }}</td>
+                                                        <td>{{ $row->tanggal_sampai }}</td>
+                                                        <td>
+                                                            <a href="#modalDetail{{ $row->id_borrowing }}"
+                                                                data-toggle="modal"class="btn btn-xs btn-default btn-custom"><i
+                                                                    class="fas fa-search"></i>Detail</a>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

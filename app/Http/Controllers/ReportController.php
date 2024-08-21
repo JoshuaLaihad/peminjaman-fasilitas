@@ -28,22 +28,22 @@ class ReportController extends Controller
     {
         $title = "Laporan Peminjaman";
         $borrowings = Borrowing::with(['facility', 'user'])
-            ->where('user_id', Auth::id())
+            ->where('id_user', Auth::id())
             ->get();
         $facilities = Facility::with('category')->get();
         return view('user.laporan', compact('title', 'borrowings', 'facilities'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_borrowing)
     {
         $request->validate([
-            'status' => 'required|in:pending,ditolak,diterima,selesai',
+            'status' => 'required|in:Pending,Ditolak,Diterima,Selesai',
         ]);
 
-        $borrowing = Borrowing::findOrFail($id);
+        $borrowing = Borrowing::findOrFail($id_borrowing);
 
-        if ($borrowing->status !== 'diterima' && $request->status === 'diterima') {
-            $facility = Facility::findOrFail($borrowing->fasilitas_id);
+        if ($borrowing->status !== 'Diterima' && $request->status === 'Diterima') {
+            $facility = Facility::findOrFail($borrowing->id_facility);
 
             if ($facility->jumlah < $borrowing->jumlah_dipinjam) {
                 return redirect()->back()->with('error', 'Jumlah tidak mencukupi untuk peminjaman.');
@@ -63,7 +63,7 @@ class ReportController extends Controller
 
             $telegramBotToken = '7123319279:AAF9JVRobFnch6bEfYibdkDr8U95lPn7_fk';
             $chatId = $borrowing->user->chat_id;
-            $message = "Selamat peminjaman fasilitas Anda telah diterima! Berikut detail fasilitas Anda:\n" .
+            $message = "Selamat peminjaman fasilitas Anda telah Diterima! Berikut detail fasilitas Anda:\n" .
                        "Kategori Fasilitas = {$borrowing->facility->category->kategori_fasilitas}\n" .
                        "Nama Fasilitas = {$borrowing->facility->nama_fasilitas}\n" .
                        "Keterangan Fasilitas = {$borrowing->keterangan_fasilitas}" .
@@ -76,8 +76,8 @@ class ReportController extends Controller
                 'text' => $message,
             ]);
 
-        } elseif ($borrowing->status === 'diterima' && $request->status !== 'diterima') {
-            $facility = Facility::findOrFail($borrowing->fasilitas_id);
+        } elseif ($borrowing->status === 'Diterima' && $request->status !== 'Diterima') {
+            $facility = Facility::findOrFail($borrowing->id_facility);
             $facility->jumlah += $borrowing->jumlah_dipinjam;
             $facility->status = 'Tersedia';
             $facility->save();
@@ -98,10 +98,11 @@ class ReportController extends Controller
 
         return redirect()->route('admin.laporan')->with('success', 'Status peminjaman berhasil diperbarui.');
     }
+    
 
-    public function destroy($id)
+    public function destroy($id_borrowing)
     {
-        $borrowing = Borrowing::find($id);
+        $borrowing = Borrowing::find($id_borrowing);
         $borrowing->delete();
         return redirect()->route('admin.laporan')->with('success', 'Laporan Peminjaman Berhasil Dihapus.');
     }

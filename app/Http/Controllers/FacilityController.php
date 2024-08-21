@@ -34,60 +34,60 @@ class FacilityController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'categories_id' => 'required|exists:categories,id',
-            'nama_fasilitas' => 'required|string|max:255',
-            'keterangan_fasilitas' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
+            'id_category' => 'required|exists:categories,id_category',
+            'nama_fasilitas' => 'required|string|max:40',
+            'keterangan_fasilitas' => 'required|string|max:40',
+            'status' => 'required|string|max:20',
             'jumlah' => 'required|integer',
             'tanggal' => 'required|date',
-            'nama_file' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'nama_gambar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        if ($request->hasFile('nama_file')) {
-            $file = $request->file('nama_file');
+        if ($request->hasFile('nama_gambar')) {
+            $file = $request->file('nama_gambar');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('uploads'), $filename);
         }
 
         Facility::create([
-            'categories_id' => $request->categories_id,
+            'id_category' => $request->id_category,
             'nama_fasilitas' => $request->nama_fasilitas,
             'keterangan_fasilitas' => $request->keterangan_fasilitas,
             'status' => $request->status,
             'jumlah' => $request->jumlah,
             'tanggal' => $request->tanggal,
-            'nama_file' => $filename,
+            'nama_gambar' => $filename,
         ]);
 
         return redirect()->route('admin.fasilitas')->with('success', 'Data Fasilitas Berhasil Ditambahkan');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_category)
     {
         $validatedData = $request->validate([
-            'categories_id' => 'required|exists:categories,id',
-            'nama_fasilitas' => 'required|string|max:255',
-            'keterangan_fasilitas' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
+            'id_category' => 'required|exists:categories,id_category',
+            'nama_fasilitas' => 'required|string|max:40',
+            'keterangan_fasilitas' => 'required|string|max:40',
+            'status' => 'required|string|max:20',
             'jumlah' => 'required|integer',
             'tanggal' => 'required|date',
-            'nama_file' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'nama_gambar' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $facility = Facility::findOrFail($id);
+        $facility = Facility::findOrFail($id_category);
 
-        if ($request->hasFile('nama_file')) {
-            if ($facility->nama_file && file_exists(public_path('uploads/' . $facility->nama_file))) {
-                unlink(public_path('uploads/' . $facility->nama_file));
+        if ($request->hasFile('nama_gambar')) {
+            if ($facility->nama_gambar && file_exists(public_path('uploads/' . $facility->nama_gambar))) {
+                unlink(public_path('uploads/' . $facility->nama_gambar));
             }
 
-            $file = $request->file('nama_file');
+            $file = $request->file('nama_gambar');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('uploads'), $filename);
 
-            $validatedData['nama_file'] = $filename;
+            $validatedData['nama_gambar'] = $filename;
         } else {
-            $validatedData['nama_file'] = $facility->nama_file;
+            $validatedData['nama_gambar'] = $facility->nama_gambar;
         }
 
         $isStatusChanged = $validatedData['status'] != $facility->status;
@@ -111,9 +111,9 @@ class FacilityController extends Controller
         return redirect()->route('admin.fasilitas')->with('success', 'Data Fasilitas Berhasil Diperbarui');
     }
 
-    public function destroy($id)
+    public function destroy($id_category)
     {
-        $facility = Facility::find($id);
+        $facility = Facility::find($id_category);
         $facility->delete();
         return redirect()->route('admin.fasilitas')->with('success', 'Data Fasilitas Berhasil Dihapus');
     }

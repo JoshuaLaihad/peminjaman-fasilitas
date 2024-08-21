@@ -98,7 +98,7 @@
 								<div class="col col-stats ml-3 ml-sm-0">
 									<div class="numbers">
 										<p class="card-category">Peminjaman</p>
-										<h4 class="card-title">{{ $borrowingsCount }}</h4>
+										<h4 class="card-title"></h4>
 									</div>
 								</div>
 							</div>

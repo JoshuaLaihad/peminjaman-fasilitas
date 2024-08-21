@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -22,15 +21,19 @@ class CheckRole
 
         // Check if user is authenticated
         if (!$user) {
-            return redirect('/login');
+            return redirect()->route('login');
         }
 
-        // Check for admin prefix and role
+        // Check role if specified in the route definition
+        if ($role && $user->role !== $role) {
+            return redirect('/')->with('error', 'You do not have access to this page.');
+        }
+
+        // Check role based on prefix
         if ($request->is('admin/*') && $user->role !== 'admin') {
             return redirect('/')->with('error', 'You do not have access to this page.');
         }
 
-        // Check for user prefix and role
         if ($request->is('user/*') && $user->role !== 'user') {
             return redirect('/')->with('error', 'You do not have access to this page.');
         }
